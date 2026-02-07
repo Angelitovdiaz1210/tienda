@@ -8,25 +8,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* Estructura para Footer Fijo al Fondo */
         html, body { height: 100%; margin: 0; }
         body { display: flex; flex-direction: column; background: #0f172a; font-family: sans-serif; }
         main { flex: 1 0 auto; background: #f8fafc; border-radius: 0 0 40px 40px; padding-bottom: 60px; }
-        .footer-vibe { flex-shrink: 0; background: #0f172a; color: white; padding: 60px 20px 40px; }
+        .footer-vibe { flex-shrink: 0; background: #0f172a; color: white; padding: 60px 20px 40px; position: relative; }
+        .btn-premium { background: linear-gradient(90deg, #2563eb, #7c3aed); }
         
-        /* Botones y Cards */
-        .btn-premium { background: linear-gradient(90deg, #2563eb, #7c3aed); shadow: 0 4px 15px rgba(37, 99, 235, 0.4); }
-        .card-phone { background: white; border-radius: 30px; overflow: hidden; border: 1px solid #e2e8f0; transition: 0.3s; }
-        
-        /* Área oculta para admin (Pie de página, lado derecho) */
-        #admin-trigger { width: 40px; height: 40px; position: absolute; right: 0; bottom: 0; opacity: 0; cursor: default; }
+        /* BOTÓN SECRETO MEJORADO PARA MÓVIL */
+        #admin-lock {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            width: 50px;
+            height: 50px;
+            background: transparent;
+            z-index: 999;
+            border: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
     </style>
 </head>
 <body>
 
     <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b p-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div id="logo-admin" class="flex items-center gap-2 cursor-pointer">
+            <div class="flex items-center gap-2">
                 <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl">V</div>
                 <h1 class="text-xl font-900 tracking-tighter">VibePhones<span class="text-blue-600">RD</span></h1>
             </div>
@@ -35,17 +42,12 @@
     </header>
 
     <main>
-        <div class="max-w-7xl mx-auto px-6 pt-10">
-            <div class="mb-12 text-center">
-                <h2 class="text-4xl font-900 text-slate-900 italic tracking-tighter">iPhones de Colección</h2>
-                <div class="h-1 w-20 bg-blue-600 mx-auto mt-4 rounded-full"></div>
-            </div>
+        <div class="max-w-7xl mx-auto px-6 pt-10 text-center">
+            <h2 class="text-4xl font-900 text-slate-900 italic tracking-tighter mb-12">iPhones de Colección</h2>
+            <div id="grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
 
-            <div id="grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                </div>
-
-            <section class="max-w-xl mx-auto bg-white p-8 rounded-[35px] shadow-2xl mt-20 border border-slate-100">
-                <h3 class="text-2xl font-900 text-center mb-6 italic">Confirmación de Pago</h3>
+            <section class="max-w-xl mx-auto bg-white p-8 rounded-[35px] shadow-2xl mt-20 border border-slate-100 text-left">
+                <h3 class="text-2xl font-900 text-center mb-6 italic text-slate-900">Confirmación de Pago</h3>
                 <form action="https://formspree.io/f/mlgwedgv" method="POST" class="space-y-4">
                     <input type="text" name="Nombre" placeholder="Tu nombre" required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-blue-500">
                     <textarea name="Mensaje" placeholder="Detalles del pedido..." required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none h-32 focus:ring-2 focus:ring-blue-500"></textarea>
@@ -55,7 +57,7 @@
         </div>
     </main>
 
-    <footer class="footer-vibe relative">
+    <footer class="footer-vibe">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-slate-800 pb-12">
             <div>
                 <div class="text-3xl font-900 mb-4 text-white">VibePhones<span class="text-blue-400">RD</span></div>
@@ -68,22 +70,24 @@
             <div>
                 <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Nuestra Tienda</h4>
                 <div class="rounded-2xl overflow-hidden h-40 border border-slate-700">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121059.034473969!2d-69.9454032!3d18.4718609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8eaf883907705117%3A0xc3f1f7d54972f05!2sSanto%20Domingo!5e0!3m2!1ses!2sdo!4v1700000000000" width="100%" height="100%" style="border:0;" allowfullscreen=""></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121094.0!2d-69.9!3d18.4" width="100%" height="100%" style="border:0;" allowfullscreen=""></iframe>
                 </div>
             </div>
             <div class="md:text-right">
-                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Llámanos</h4>
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest text-white">Llámanos</h4>
                 <a href="tel:8098182320" class="text-2xl font-black text-white underline decoration-blue-500">809-818-2320</a>
             </div>
         </div>
         <div class="text-center mt-10">
-            <p id="secret-trigger" class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.4em] cursor-pointer">
-                © 2026 VibePhones RD - Todos los derechos reservados
+            <p class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.4em]">
+                © 2026 VibePhones RD - Oficial
             </p>
         </div>
+        
+        <button id="admin-lock" onclick="checkAdmin()"></button>
     </footer>
 
-    <a href="https://wa.me/8098182320" class="fixed bottom-6 right-6 w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl z-[100] hover:scale-110 transition-transform">
+    <a href="https://wa.me/8098182320" class="fixed bottom-6 right-6 w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl z-[100]">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -95,48 +99,45 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- ACCESO ADMINISTRADOR ---
-        let adminClicks = 0;
-        const trigger = document.getElementById('secret-trigger');
-
-        trigger.addEventListener('click', () => {
-            adminClicks++;
-            if(adminClicks === 5) {
-                let pass = prompt("Contraseña de Administrador:");
+        // --- FUNCIÓN ADMINISTRADOR ---
+        let clicks = 0;
+        window.checkAdmin = function() {
+            clicks++;
+            if(clicks === 5) {
+                let pass = prompt("Acceso Restringido:");
                 if(pass === "Avd121094") {
-                    const n = prompt("Nombre del iPhone (ej: iPhone 15 Pro):");
-                    const p = prompt("Precio (solo números):");
-                    const img = prompt("Enlace (URL) de la imagen:");
+                    const n = prompt("Nombre:");
+                    const p = prompt("Precio:");
+                    const img = prompt("URL de Imagen:");
                     if(n && p && img) {
                         addDoc(collection(db, "productos"), { n, p, imgs: [img], cat: 'phones', creado: Date.now() })
-                        .then(() => alert("Producto agregado con éxito"))
-                        .catch((e) => alert("Error: " + e));
+                        .then(() => alert("Agregado con éxito"));
                     }
-                } else {
-                    alert("Contraseña incorrecta");
                 }
-                adminClicks = 0;
+                clicks = 0;
             }
-        });
+            // Resetear clicks tras 3 segundos
+            setTimeout(() => { clicks = 0; }, 3000);
+        };
 
-        // --- CARGAR PRODUCTOS ---
+        // --- CARGA DE DATOS ---
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const grid = document.getElementById('grid-container');
             grid.innerHTML = "";
             snap.forEach(s => {
                 const d = s.data();
                 grid.innerHTML += `
-                    <div class="card-phone shadow-lg">
+                    <div class="bg-white rounded-[30px] overflow-hidden shadow-lg border border-slate-100">
                         <img src="${d.imgs[0]}" class="h-72 w-full object-cover">
                         <div class="p-6">
-                            <h3 class="font-900 text-xl text-slate-900">${d.n}</h3>
-                            <p class="text-blue-600 font-900 text-2xl mt-1 italic">RD$ ${Number(d.p).toLocaleString()}</p>
-                            <a href="https://wa.me/8098182320" target="_blank" class="btn-premium text-white block text-center mt-6 py-4 rounded-2xl font-black text-xs uppercase shadow-md">Apartar Ahora</a>
+                            <h3 class="font-bold text-xl text-slate-900 text-left">${d.n}</h3>
+                            <p class="text-blue-600 font-black text-2xl mt-1 italic text-left">RD$ ${Number(d.p).toLocaleString()}</p>
+                            <a href="https://wa.me/8098182320" target="_blank" class="btn-premium text-white block text-center mt-6 py-4 rounded-2xl font-black text-xs uppercase">Apartar</a>
                         </div>
                     </div>`;
             });
         });
     </script>
 </body>
-                        </html>
-                        
+    </html>
+    
