@@ -3,98 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>VibePhones RD | Store</title>
+    <title>VibePhones RD | Tech Store</title>
+    <meta name="description" content="VibePhones RD - Lo mejor en iPhones, Android y Tablets en República Dominicana. Calidad Premium.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #f8fafc; font-family: sans-serif; margin: 0; }
-        .btn-vibe { background: linear-gradient(90deg, #1d4ed8, #7c3aed); }
-        /* OCULTAR PANEL ADMIN TOTALMENTE */
+        body { background: #f1f5f9; font-family: 'Inter', sans-serif; display: flex; justify-content: center; }
+        
+        /* Contenedor para que en PC se vea como un móvil elegante y en móvil ocupe todo */
+        .app-container { 
+            background: #f8fafc; 
+            width: 100%; 
+            max-width: 500px; /* Tamaño ideal para PC */
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .btn-vibe { background: linear-gradient(90deg, #0f172a, #2563eb); }
+        
+        /* Modales */
         #panel-admin { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 1000; overflow-y: auto; padding: 25px; }
-        /* MODAL CARRITO */
-        #modal-carrito { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
-        .card-phone { transition: transform 0.3s; border-radius: 35px; overflow: hidden; background: white; border: 1px solid #f1f5f9; }
+        #modal-exito, #modal-carrito { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9); z-index: 600; align-items: center; justify-content: center; padding: 20px; }
+        
+        .recibo-blanco { background: white; border-radius: 20px; padding: 25px; width: 100%; max-width: 300px; text-align: center; }
+        
+        /* Imágenes súper compactas */
+        .img-tech { height: 110px; width: 100%; object-fit: contain; background: #fff; padding: 8px; }
+        .card-tech { border-radius: 15px; overflow: hidden; background: white; border: 1px solid #f1f5f9; transition: 0.2s; }
+        
+        .aviso-sticky { background: #fffbeb; border: 2px solid #fbbf24; border-radius: 15px; padding: 12px; margin: 10px; }
+        
+        .google-search { background: white; border-radius: 50px; padding: 8px 15px; display: flex; align-items: center; border: 1px solid #e2e8f0; margin: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .google-search input { border: none; outline: none; width: 100%; font-size: 12px; margin-left: 8px; }
     </style>
 </head>
 <body>
 
-    <header class="bg-white border-b p-4 sticky top-0 z-50 flex justify-between items-center shadow-sm">
-        <div onclick="accederAdmin()" class="flex items-center gap-2 cursor-pointer">
-            <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">V</div>
-            <h1 class="text-xl font-bold tracking-tighter text-slate-900">VibePhones<span class="text-blue-600 italic">RD</span></h1>
-        </div>
-        <a href="https://wa.me/8098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
-    </header>
-
-    <main class="max-w-7xl mx-auto p-6">
-        <div class="text-center mb-12">
-            <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter">iPhones de Colección</h2>
-        </div>
-        <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
-    </main>
-
-    <footer class="bg-slate-900 text-white p-10 mt-20">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div>
-                <h3 class="text-2xl font-black mb-4 uppercase">VibePhones<span class="text-blue-400 italic">RD</span></h3>
-                <p class="text-slate-400 text-sm">Calidad Premium Grado A+. La mejor experiencia en iPhones de República Dominicana.</p>
+    <div class="app-container">
+        <header class="bg-white border-b p-4 sticky top-0 z-50 flex justify-between items-center shadow-sm">
+            <div onclick="accederAdmin()" class="flex items-center gap-2 cursor-pointer">
+                <div class="w-8 h-8 btn-vibe rounded-lg flex items-center justify-center text-white font-black">V</div>
+                <h1 class="text-md font-bold text-slate-900 tracking-tighter">VibePhones<span class="text-blue-600 italic">RD</span></h1>
             </div>
-            <div>
-                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Ubicación Actual</h4>
-                <div class="rounded-[25px] overflow-hidden h-48 border border-slate-700 shadow-2xl">
-                    <iframe id="mapa-publico" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+            <a href="https://wa.me/8098182320" class="text-green-500 text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
+        </header>
+
+        <main class="p-2">
+            <form action="https://www.google.com/search" method="get" target="_blank" class="google-search">
+                <i class="fa-brands fa-google text-blue-500 text-sm"></i>
+                <input type="text" name="q" placeholder="Buscar especificaciones...">
+                <button type="submit" class="text-slate-400 text-xs"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+
+            <div class="aviso-sticky text-center shadow-sm">
+                <h3 class="text-red-600 font-black text-[9px] uppercase mb-1 italic">⚠️ AVISO IMPORTANTE</h3>
+                <p class="text-[10px] text-slate-700 font-semibold leading-tight">
+                    Equipos por pedidos: **70% al solicitar** y **30% restante** para la entrega.
+                </p>
+                <p class="text-[9px] text-blue-700 font-bold mt-1 uppercase italic underline">El equipo se entrega al completar el pago.</p>
+            </div>
+
+            <div class="text-center my-4">
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest">Catálogo Disponible</p>
+            </div>
+
+            <div id="grid-productos" class="grid grid-cols-2 gap-3 mb-8 px-2"></div>
+
+            <section class="bg-white rounded-[20px] p-4 shadow-sm border border-slate-100 mb-6 mx-2">
+                <h3 class="text-[10px] font-black text-slate-800 uppercase mb-3 text-center underline decoration-blue-500">Preguntas</h3>
+                <div id="lista-comentarios" class="space-y-3 mb-4 max-h-40 overflow-y-auto"></div>
+                <div class="flex flex-col gap-2">
+                    <input type="text" id="com-nombre" placeholder="Nombre" class="w-full p-2 rounded-lg bg-slate-50 text-[10px] border outline-none">
+                    <textarea id="com-texto" placeholder="¿Duda?" class="w-full p-2 rounded-lg bg-slate-50 text-[10px] border outline-none h-14"></textarea>
+                    <button onclick="enviarComentario()" class="btn-vibe text-white py-2 rounded-lg font-black text-[9px] uppercase">Enviar</button>
                 </div>
-            </div>
-            <div class="md:text-right">
-                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Contacto Directo</h4>
-                <a href="tel:8098182320" class="text-3xl font-black underline decoration-blue-500 decoration-4 italic">809-818-2320</a>
-            </div>
-        </div>
-    </footer>
+            </section>
+
+            <footer class="text-center py-6 border-t mt-10">
+                <p class="text-[10px] font-black text-slate-900 uppercase">VibePhones RD</p>
+                <p class="text-[9px] text-slate-400 mt-1">Santo Domingo, República Dominicana</p>
+                <p class="text-[11px] font-bold text-blue-600 mt-2">809-818-2320</p>
+            </footer>
+        </main>
+    </div>
 
     <div id="modal-carrito">
-        <div class="bg-white w-full max-w-md rounded-[35px] p-8 shadow-2xl relative">
-            <button onclick="cerrarCarrito()" class="absolute top-6 right-6 text-slate-400 text-2xl"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-2xl font-black text-slate-900 mb-2 italic text-center">Formulario de Compra</h3>
-            <p id="info-equipo" class="text-blue-600 font-bold mb-6 text-center text-sm"></p>
-            <form action="https://formspree.io/f/mlgwedgv" method="POST" class="space-y-4">
-                <input type="hidden" name="Articulo" id="hidden-equipo">
-                <input type="text" name="Cliente" placeholder="Nombre completo" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
-                <input type="email" name="Correo" placeholder="Correo electrónico" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
-                <select name="FormaPago" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
-                    <option value="Transferencia">Transferencia Bancaria</option>
-                    <option value="Efectivo">Efectivo / Delivery</option>
+        <div class="bg-white w-full max-w-[320px] rounded-[25px] p-6 shadow-2xl relative">
+            <button onclick="cerrarCarrito()" class="absolute top-4 right-4 text-slate-300 text-xl"><i class="fa-solid fa-circle-xmark"></i></button>
+            <h3 class="text-md font-black text-slate-900 mb-4 text-center uppercase italic">Solicitar Equipo</h3>
+            <form id="form-compra" class="space-y-3">
+                <input type="text" id="c-nombre" placeholder="Nombre completo" required class="w-full p-3 rounded-xl bg-slate-50 border text-xs outline-none">
+                <select id="c-metodo" required class="w-full p-3 rounded-xl bg-slate-50 border text-xs outline-none">
+                    <option value="APARTADO (70%)">Apartar con el 70%</option>
+                    <option value="PAGO TOTAL">Pago Total</option>
                 </select>
-                <button type="submit" class="w-full btn-vibe py-5 rounded-2xl font-black text-white uppercase tracking-widest shadow-lg">Generar Recibo Digital</button>
+                <button type="submit" class="w-full btn-vibe py-3.5 rounded-xl font-black text-white uppercase text-[10px]">Generar Orden</button>
             </form>
         </div>
     </div>
 
-    <div id="panel-admin">
-        <div class="max-w-2xl mx-auto">
-            <div class="flex justify-between items-center mb-8 border-b pb-4">
-                <h2 class="text-3xl font-black italic">Vibe<span class="text-blue-600">Admin</span></h2>
-                <button onclick="cerrarAdmin()" class="bg-red-500 text-white px-6 py-2 rounded-xl font-bold uppercase text-xs">Salir del Panel</button>
+    <div id="modal-exito">
+        <div class="recibo-blanco">
+            <div class="text-blue-600 text-3xl mb-2"><i class="fa-solid fa-circle-check"></i></div>
+            <h4 class="text-slate-900 font-black text-[10px] uppercase mb-4">VibePhones RD</h4>
+            <div class="border-t border-b border-dashed py-4 mb-4 text-left space-y-2">
+                <p class="text-[10px] text-slate-700 font-medium">📱 <span id="r-equipo"></span></p>
+                <p class="text-[10px] text-slate-700">👤 Cliente: <span id="r-nombre"></span></p>
+                <p class="text-sm font-black text-blue-700 mt-2 text-center">TOTAL: RD$ <span id="r-total"></span></p>
             </div>
-            
-            <div class="bg-slate-50 p-6 rounded-[35px] border border-slate-200 mb-10 space-y-4 shadow-sm">
-                <h4 class="font-bold text-slate-400 text-[10px] uppercase tracking-widest">Publicar Nuevo Equipo</h4>
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" id="ad-nombre" placeholder="Nombre del iPhone" class="p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
-                    <input type="number" id="ad-precio" placeholder="Precio RD$" class="p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
-                </div>
-                <input type="text" id="ad-img" placeholder="Link (URL) de la Foto del iPhone" class="w-full p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="text" id="ad-cap" placeholder="Almacenamiento (ej: 128GB)" class="p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
-                    <input type="text" id="ad-det" placeholder="Detalles (Batería, Grado)" class="p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
-                </div>
-                <h4 class="font-bold text-slate-400 text-[10px] uppercase tracking-widest mt-4">Actualizar Ubicación del Mapa</h4>
-                <input type="text" id="ad-dir" placeholder="Escribe la dirección (ej: Piantini, Santo Domingo)" class="w-full p-4 rounded-2xl border-none ring-1 ring-blue-200 outline-none">
-                <button onclick="guardarTodo()" class="w-full btn-vibe py-5 rounded-2xl text-white font-black uppercase tracking-widest shadow-xl">Guardar Cambios y Publicar</button>
-            </div>
+            <button onclick="enviarWhatsApp()" class="w-full bg-[#25D366] py-3.5 rounded-xl text-white font-black text-[9px] uppercase flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Confirmar pedido
+            </button>
+        </div>
+    </div>
 
-            <h4 class="font-bold text-slate-900 text-sm mb-4">Artículos en Venta (Eliminar Vendidos):</h4>
-            <div id="admin-lista-borrar" class="space-y-3"></div>
+    <div id="panel-admin">
+        <div class="max-w-xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-black italic">VIBE ADMIN</h2>
+                <button onclick="cerrarAdmin()" class="text-red-500 font-bold text-xs uppercase underline">Cerrar</button>
+            </div>
+            <div class="bg-slate-50 p-5 rounded-xl border space-y-3">
+                <input type="text" id="ad-nombre" placeholder="Nombre Equipo" class="w-full p-3 rounded-lg border text-sm">
+                <input type="number" id="ad-precio" placeholder="Precio RD$" class="w-full p-3 rounded-lg border text-sm">
+                <input type="file" id="ad-file" accept="image/*" class="w-full p-2 bg-white text-[10px]">
+                <button onclick="procesarSubida()" id="btn-publicar" class="w-full btn-vibe py-3 rounded-lg text-white font-black uppercase text-xs">Publicar</button>
+            </div>
+            <div id="admin-lista-borrar" class="mt-8 space-y-2"></div>
         </div>
     </div>
 
@@ -106,83 +142,76 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- ACCESO ADMIN ---
-        let clicks = 0;
-        window.accederAdmin = () => {
-            clicks++;
-            if(clicks === 5) {
-                if(prompt("Introduce Clave Maestra:") === "Avd121094") {
-                    document.getElementById('panel-admin').style.display = 'block';
-                }
-                clicks = 0;
-            }
-            setTimeout(() => clicks = 0, 2000);
-        };
-        window.cerrarAdmin = () => document.getElementById('panel-admin').style.display = 'none';
+        let selProd = {};
 
-        // --- GUARDAR Y BORRAR ---
-        window.guardarTodo = async () => {
-            const n = document.getElementById('ad-nombre').value, p = document.getElementById('ad-precio').value, 
-                  img = document.getElementById('ad-img').value, cap = document.getElementById('ad-cap').value,
-                  det = document.getElementById('ad-det').value, dir = document.getElementById('ad-dir').value;
-
-            if(n && p && img) {
-                await addDoc(collection(db, "productos"), { n, p, imgs:[img], cap, det, creado: Date.now() });
-                if(dir) localStorage.setItem('vibe_dir', dir);
-                alert("¡Publicado con éxito!");
-                location.reload();
-            } else if (dir) {
-                localStorage.setItem('vibe_dir', dir);
-                alert("¡Mapa Actualizado!");
-                location.reload();
+        window.enviarComentario = async () => {
+            const n = document.getElementById('com-nombre').value, t = document.getElementById('com-texto').value;
+            if(n && t) {
+                await addDoc(collection(db, "comentarios"), { n, t, creado: Date.now() });
+                document.getElementById('com-nombre').value = ""; document.getElementById('com-texto').value = "";
             }
         };
 
-        window.borrarItem = async (id) => {
-            if(confirm("¿Eliminar este iPhone de la tienda?")) {
-                await deleteDoc(doc(db, "productos", id));
-            }
-        };
-
-        // --- CARGA DE DATOS ---
-        const dirActual = localStorage.getItem('vibe_dir') || "Santo Domingo, RD";
-        document.getElementById('mapa-publico').src = `https://maps.google.com/maps?q=${encodeURIComponent(dirActual)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
-
-        onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
-            const grid = document.getElementById('grid-productos'); 
-            const listaBorrar = document.getElementById('admin-lista-borrar');
-            grid.innerHTML = ""; listaBorrar.innerHTML = "";
-            
+        onSnapshot(query(collection(db, "comentarios"), orderBy("creado", "desc")), (snap) => {
+            const ctn = document.getElementById('lista-comentarios'); ctn.innerHTML = "";
             snap.forEach(s => {
-                const d = s.data(); const id = s.id; const pr = Number(d.p).toLocaleString();
-                // Público
-                grid.innerHTML += `
-                    <div class="card-phone shadow-lg flex flex-col h-full">
-                        <img src="${d.imgs[0]}" class="h-64 w-full object-cover">
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="font-black text-slate-900 text-lg mb-1">${d.n} <span class="text-[10px] text-blue-500 ml-1 uppercase">${d.cap || ''}</span></h3>
-                            <p class="text-2xl font-black text-blue-600 italic mb-2">RD$ ${pr}</p>
-                            <p class="text-[11px] text-slate-400 mb-6 font-medium">${d.det || 'Grado A+'}</p>
-                            <button onclick="abrirCarrito('${d.n}', '${pr}')" class="mt-auto w-full btn-vibe py-4 rounded-2xl text-white font-black text-xs uppercase shadow-md">
-                                <i class="fa-solid fa-cart-shopping mr-2"></i> Carrito
-                            </button>
-                        </div>
-                    </div>`;
-                // Admin
-                listaBorrar.innerHTML += `
-                    <div class="flex justify-between items-center bg-white p-4 rounded-2xl border shadow-sm">
-                        <span class="text-xs font-bold text-slate-700">${d.n} - RD$ ${pr}</span>
-                        <button onclick="borrarItem('${id}')" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg text-[10px] font-bold uppercase">Borrar</button>
-                    </div>`;
+                const d = s.data();
+                ctn.innerHTML += `<div class="bg-slate-50 p-2.5 rounded-xl border-l-4 border-blue-500"><p class="text-[8px] font-black uppercase">${d.n}</p><p class="text-[10px] text-slate-600">${d.t}</p></div>`;
             });
         });
 
-        window.abrirCarrito = (n, p) => {
-            document.getElementById('info-equipo').innerText = n + " - RD$ " + p;
-            document.getElementById('hidden-equipo').value = n + " (" + p + ")";
-            document.getElementById('modal-carrito').style.display = 'flex';
+        document.getElementById('form-compra').onsubmit = (e) => {
+            e.preventDefault();
+            document.getElementById('r-nombre').innerText = document.getElementById('c-nombre').value;
+            document.getElementById('r-equipo').innerText = selProd.n;
+            document.getElementById('r-total').innerText = selProd.p;
+            document.getElementById('modal-carrito').style.display = 'none';
+            document.getElementById('modal-exito').style.display = 'flex';
         };
+
+        window.enviarWhatsApp = () => {
+            const n = document.getElementById('c-nombre').value, m = document.getElementById('c-metodo').value;
+            const msg = encodeURIComponent(`📦 *NUEVA ORDEN VIBE*\n✅ Tipo: ${m}\n📱 Equipo: ${selProd.n}\n💰 Monto: RD$ ${selProd.p}\n👤 Cliente: ${n}`);
+            window.open(`https://wa.me/8098182320?text=${msg}`);
+        };
+
+        window.accederAdmin = () => { if(prompt("Acceso:") === "Avd121094") document.getElementById('panel-admin').style.display = 'block'; };
+        window.cerrarAdmin = () => document.getElementById('panel-admin').style.display = 'none';
         window.cerrarCarrito = () => document.getElementById('modal-carrito').style.display = 'none';
+
+        window.procesarSubida = async () => {
+            const f = document.getElementById('ad-file').files[0], n = document.getElementById('ad-nombre').value, p = document.getElementById('ad-precio').value;
+            if(!f || !n || !p) return alert("Faltan datos");
+            const btn = document.getElementById('btn-publicar'); btn.disabled = true; btn.innerText = "Subiendo...";
+            const fd = new FormData(); fd.append("image", f);
+            const res = await fetch("https://api.imgbb.com/1/upload?key=6d302d99d3d3a1f1d9a2a904d9b7577e", { method: "POST", body: fd });
+            const data = await res.json();
+            await addDoc(collection(db, "productos"), { n, p, img: data.data.url, creado: Date.now() });
+            location.reload();
+        };
+
+        onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
+            const grid = document.getElementById('grid-productos'); 
+            const lista = document.getElementById('admin-lista-borrar');
+            grid.innerHTML = ""; lista.innerHTML = "";
+            snap.forEach(s => {
+                const d = s.data(), id = s.id, price = Number(d.p).toLocaleString();
+                grid.innerHTML += `
+                    <div class="card-tech flex flex-col">
+                        <img src="${d.img}" class="img-tech">
+                        <div class="p-2.5">
+                            <h3 class="text-[8px] font-black truncate uppercase">${d.n}</h3>
+                            <p class="text-[10px] font-black text-blue-600 mb-2 italic">RD$ ${price}</p>
+                            <button onclick="abrirCarrito('${d.n}', '${price}')" class="w-full btn-vibe py-1.5 rounded-lg text-white font-black text-[8px] uppercase">Pedir</button>
+                        </div>
+                    </div>`;
+                lista.innerHTML += `<div class="flex justify-between p-2 bg-white border rounded-lg items-center"><span class="text-[9px] font-bold text-slate-500">${d.n}</span><button onclick="borrarItem('${id}')" class="text-red-500 font-bold text-[8px]">X</button></div>`;
+            });
+        });
+
+        window.abrirCarrito = (n, p) => { selProd = { n, p }; document.getElementById('modal-carrito').style.display = 'flex'; };
+        window.borrarItem = async (id) => { if(confirm("¿Eliminar?")) await deleteDoc(doc(db, "productos", id)); };
     </script>
 </body>
-    </html>
+                </html>
+                
