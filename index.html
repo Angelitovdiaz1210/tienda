@@ -21,7 +21,7 @@
     <header class="bg-white sticky top-0 z-50 border-b p-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div id="admin-trigger" class="flex items-center gap-2 cursor-pointer">
-                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl">V</div>
+                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">V</div>
                 <h1 class="text-xl font-bold tracking-tighter">VibePhones<span class="text-blue-600 italic">RD</span></h1>
             </div>
             <a href="https://wa.me/8098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
@@ -56,12 +56,14 @@
                 </div>
             </div>
             <div>
-                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Ubicación</h4>
-                <p class="text-slate-400 text-sm italic">Santo Domingo, RD</p>
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Nuestra Tienda</h4>
+                <p class="text-slate-400 text-sm italic">Santo Domingo, República Dominicana</p>
+                <p class="text-[10px] text-slate-600 mt-2 font-bold italic">CALIDAD PREMIUM GRADO A+</p>
             </div>
             <div class="md:text-right">
                 <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest text-white">Llámanos</h4>
                 <a href="tel:8098182320" class="text-2xl font-black text-white underline decoration-blue-500">809-818-2320</a>
+                <p class="text-[10px] text-slate-500 mt-6 uppercase font-bold tracking-widest">© 2026 VibePhones RD - Oficial</p>
             </div>
         </div>
     </footer>
@@ -74,24 +76,27 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- ADMIN CON MÁS DETALLES ---
-        let clicks = 0;
+        // --- ADMINISTRADOR MEJORADO (5 CLICS EN EL LOGO) ---
+        let adminClicks = 0;
         document.getElementById('admin-trigger').onclick = () => {
-            clicks++;
-            if(clicks === 5) {
-                if(prompt("Clave:") === "Avd121094") {
-                    const n = prompt("Nombre (ej: iPhone 13 Pro):");
-                    const p = prompt("Precio (ej: 35500):");
+            adminClicks++;
+            if(adminClicks === 5) {
+                let pass = prompt("Acceso Administrador:");
+                if(pass === "Avd121094") {
+                    const n = prompt("Nombre iPhone:");
+                    const p = prompt("Precio (solo números):");
                     const img = prompt("URL de la Imagen:");
                     const cap = prompt("Almacenamiento (ej: 128GB):");
-                    const det = prompt("Detalles (ej: Grado A+, Batería 100%):");
-                    if(n && p && img) addDoc(collection(db, "productos"), { n, p, imgs:[img], cap, det, creado: Date.now() });
+                    const det = prompt("Detalles/Estado:");
+                    if(n && p && img) {
+                        addDoc(collection(db, "productos"), { n, p, imgs: [img], cap, det, creado: Date.now() });
+                    }
                 }
-                clicks = 0;
+                adminClicks = 0;
             }
         };
 
-        // --- CARGA DE PRODUCTOS ---
+        // --- CARGAR PRODUCTOS ---
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const grid = document.getElementById('grid-container');
             grid.innerHTML = "";
@@ -99,7 +104,7 @@
                 const d = s.data();
                 const msg = encodeURIComponent(`Hola VibePhones, quiero confirmar la compra de: ${d.n} (${d.cap || ''}) por RD$ ${Number(d.p).toLocaleString()}`);
                 grid.innerHTML += `
-                    <div class="card-phone shadow-lg">
+                    <div class="card-phone shadow-lg animate-fadeIn">
                         <img src="${d.imgs[0]}" class="h-64 w-full object-cover">
                         <div class="p-5 text-left">
                             <div class="flex justify-between items-start mb-1">
