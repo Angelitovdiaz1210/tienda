@@ -6,36 +6,34 @@
     <title>VibePhones RD | Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
         html, body { height: 100%; margin: 0; }
         body { display: flex; flex-direction: column; background: #0f172a; font-family: sans-serif; }
         main { flex: 1 0 auto; background: #f8fafc; border-radius: 0 0 40px 40px; padding-bottom: 60px; }
-        .footer-vibe { flex-shrink: 0; background: #0f172a; color: white; padding: 60px 20px 40px; position: relative; }
-        .btn-premium { background: linear-gradient(90deg, #2563eb, #7c3aed); }
+        .footer-vibe { flex-shrink: 0; background: #0f172a; color: white; padding: 50px 20px; position: relative; }
+        .btn-premium { background: linear-gradient(90deg, #2563eb, #7c3aed); border: none; }
+        .card-phone { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         
-        /* BOTÓN SECRETO MEJORADO PARA MÓVIL */
-        #admin-lock {
+        /* BOTÓN DE ADMIN MEJORADO */
+        #admin-btn {
             position: absolute;
-            right: 10px;
-            bottom: 10px;
-            width: 50px;
-            height: 50px;
+            right: 0;
+            bottom: 0;
+            width: 60px;
+            height: 60px;
             background: transparent;
-            z-index: 999;
             border: none;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
 
-    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 border-b p-4">
+    <header class="bg-white sticky top-0 z-50 border-b p-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl">V</div>
-                <h1 class="text-xl font-900 tracking-tighter">VibePhones<span class="text-blue-600">RD</span></h1>
+                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">V</div>
+                <h1 class="text-xl font-bold tracking-tighter">VibePhones<span class="text-blue-600 italic">RD</span></h1>
             </div>
             <a href="https://wa.me/8098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
         </div>
@@ -43,51 +41,52 @@
 
     <main>
         <div class="max-w-7xl mx-auto px-6 pt-10 text-center">
-            <h2 class="text-4xl font-900 text-slate-900 italic tracking-tighter mb-12">iPhones de Colección</h2>
+            <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter mb-10">iPhones de Colección</h2>
             <div id="grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
 
             <section class="max-w-xl mx-auto bg-white p-8 rounded-[35px] shadow-2xl mt-20 border border-slate-100 text-left">
-                <h3 class="text-2xl font-900 text-center mb-6 italic text-slate-900">Confirmación de Pago</h3>
+                <h3 class="text-2xl font-bold text-center mb-6 italic text-slate-900">Confirmación de Pago</h3>
                 <form action="https://formspree.io/f/mlgwedgv" method="POST" class="space-y-4">
                     <input type="text" name="Nombre" placeholder="Tu nombre" required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-blue-500">
-                    <textarea name="Mensaje" placeholder="Detalles del pedido..." required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none h-32 focus:ring-2 focus:ring-blue-500"></textarea>
-                    <button type="submit" class="btn-premium w-full py-5 rounded-2xl font-black text-white uppercase tracking-widest text-sm shadow-lg">Enviar Recibo</button>
+                    <textarea name="Mensaje" placeholder="Detalles de tu pedido..." required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none h-32 focus:ring-2 focus:ring-blue-500"></textarea>
+                    <button type="submit" class="btn-premium w-full py-5 rounded-2xl font-black text-white uppercase tracking-widest shadow-lg">Enviar Recibo</button>
                 </form>
             </section>
         </div>
     </main>
 
     <footer class="footer-vibe">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-slate-800 pb-12">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left border-b border-slate-800 pb-10">
             <div>
-                <div class="text-3xl font-900 mb-4 text-white">VibePhones<span class="text-blue-400">RD</span></div>
-                <p class="text-slate-400 text-sm italic">Calidad Premium Grado A+ en República Dominicana.</p>
-                <div class="flex gap-4 mt-6">
+                <div class="text-3xl font-black mb-4">VibePhones<span class="text-blue-400 italic">RD</span></div>
+                <p class="text-slate-400 text-sm">Calidad Premium Grado A+ en RD.</p>
+                <div class="flex justify-center md:justify-start gap-6 mt-6">
                     <a href="https://wa.me/8098182320" class="text-green-400 text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
                     <a href="https://www.instagram.com/vibephonesrd_/" class="text-pink-400 text-2xl"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
+            
             <div>
-                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Nuestra Tienda</h4>
-                <div class="rounded-2xl overflow-hidden h-40 border border-slate-700">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d121094.0!2d-69.9!3d18.4" width="100%" height="100%" style="border:0;" allowfullscreen=""></iframe>
-                </div>
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Ubicación</h4>
+                <a href="https://maps.app.goo.gl/3Q8U5P5Q5p5p5p5p5" target="_blank" class="inline-block bg-slate-800 px-6 py-4 rounded-2xl border border-slate-700 hover:bg-slate-700 transition-all">
+                    <i class="fa-solid fa-location-dot text-blue-400 mr-2"></i> Ver en Google Maps
+                </a>
             </div>
+
             <div class="md:text-right">
-                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest text-white">Llámanos</h4>
-                <a href="tel:8098182320" class="text-2xl font-black text-white underline decoration-blue-500">809-818-2320</a>
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Contacto Directo</h4>
+                <a href="tel:8098182320" class="text-2xl font-black text-white underline decoration-blue-500 italic">809-818-2320</a>
             </div>
-        </div>
-        <div class="text-center mt-10">
-            <p class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.4em]">
-                © 2026 VibePhones RD - Oficial
-            </p>
         </div>
         
-        <button id="admin-lock" onclick="checkAdmin()"></button>
+        <div class="text-center mt-10">
+            <p class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.4em]">© 2026 VibePhones RD - Oficial</p>
+        </div>
+        
+        <button id="admin-btn" onclick="openAdmin()"></button>
     </footer>
 
-    <a href="https://wa.me/8098182320" class="fixed bottom-6 right-6 w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl z-[100]">
+    <a href="https://wa.me/8098182320" class="fixed bottom-6 right-6 w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl z-[100] hover:scale-110 transition-transform">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -99,45 +98,36 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- FUNCIÓN ADMINISTRADOR ---
         let clicks = 0;
-        window.checkAdmin = function() {
+        window.openAdmin = function() {
             clicks++;
             if(clicks === 5) {
-                let pass = prompt("Acceso Restringido:");
+                let pass = prompt("Acceso Administrador:");
                 if(pass === "Avd121094") {
-                    const n = prompt("Nombre:");
-                    const p = prompt("Precio:");
-                    const img = prompt("URL de Imagen:");
-                    if(n && p && img) {
-                        addDoc(collection(db, "productos"), { n, p, imgs: [img], cat: 'phones', creado: Date.now() })
-                        .then(() => alert("Agregado con éxito"));
-                    }
+                    const n = prompt("Nombre iPhone:"), p = prompt("Precio:"), img = prompt("Link Imagen:");
+                    if(n && p && img) addDoc(collection(db, "productos"), { n, p, imgs: [img], cat: 'phones', creado: Date.now() });
                 }
                 clicks = 0;
             }
-            // Resetear clicks tras 3 segundos
-            setTimeout(() => { clicks = 0; }, 3000);
+            setTimeout(() => { clicks = 0; }, 2000);
         };
 
-        // --- CARGA DE DATOS ---
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const grid = document.getElementById('grid-container');
             grid.innerHTML = "";
             snap.forEach(s => {
                 const d = s.data();
                 grid.innerHTML += `
-                    <div class="bg-white rounded-[30px] overflow-hidden shadow-lg border border-slate-100">
+                    <div class="card-phone">
                         <img src="${d.imgs[0]}" class="h-72 w-full object-cover">
-                        <div class="p-6">
-                            <h3 class="font-bold text-xl text-slate-900 text-left">${d.n}</h3>
-                            <p class="text-blue-600 font-black text-2xl mt-1 italic text-left">RD$ ${Number(d.p).toLocaleString()}</p>
-                            <a href="https://wa.me/8098182320" target="_blank" class="btn-premium text-white block text-center mt-6 py-4 rounded-2xl font-black text-xs uppercase">Apartar</a>
+                        <div class="p-6 text-left">
+                            <h3 class="font-bold text-xl text-slate-900">${d.n}</h3>
+                            <p class="text-blue-600 font-black text-2xl mt-1 italic">RD$ ${Number(d.p).toLocaleString()}</p>
+                            <a href="https://wa.me/8098182320" target="_blank" class="btn-premium text-white block text-center mt-6 py-4 rounded-2xl font-black text-xs uppercase shadow-md">Apartar</a>
                         </div>
                     </div>`;
             });
         });
     </script>
 </body>
-    </html>
-    
+</html>
