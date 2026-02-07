@@ -7,136 +7,182 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        html, body { height: 100%; margin: 0; scroll-behavior: smooth; }
-        body { display: flex; flex-direction: column; background: #0f172a; font-family: sans-serif; }
-        main { flex: 1 0 auto; background: #f8fafc; border-radius: 0 0 40px 40px; padding-bottom: 60px; }
-        .footer-vibe { flex-shrink: 0; background: #0b1120; color: white; padding: 40px 20px; border-top: 1px solid #1e293b; }
-        .btn-premium { background: linear-gradient(90deg, #1d4ed8, #7c3aed); border: none; }
-        .card-phone { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
-        .tag-storage { background: #eff6ff; color: #1e40af; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 800; }
-        
-        /* Modal del Carrito */
-        #modal-carrito { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: white; width: 100%; max-width: 500px; border-radius: 30px; padding: 30px; position: relative; }
+        body { background: #f8fafc; font-family: sans-serif; margin: 0; }
+        .btn-vibe { background: linear-gradient(90deg, #1d4ed8, #7c3aed); }
+        /* OCULTAR PANEL ADMIN TOTALMENTE */
+        #panel-admin { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 1000; overflow-y: auto; padding: 25px; }
+        /* MODAL CARRITO */
+        #modal-carrito { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9); z-index: 500; align-items: center; justify-content: center; padding: 20px; }
+        .card-phone { transition: transform 0.3s; border-radius: 35px; overflow: hidden; background: white; border: 1px solid #f1f5f9; }
     </style>
 </head>
 <body>
 
-    <header class="bg-white sticky top-0 z-50 border-b p-4 shadow-sm">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div id="admin-trigger" class="flex items-center gap-2 cursor-pointer">
-                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">V</div>
-                <h1 class="text-xl font-bold tracking-tighter text-slate-900">VibePhones<span class="text-blue-600 italic">RD</span></h1>
-            </div>
-            <a href="https://wa.me/8098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
+    <header class="bg-white border-b p-4 sticky top-0 z-50 flex justify-between items-center shadow-sm">
+        <div onclick="accederAdmin()" class="flex items-center gap-2 cursor-pointer">
+            <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">V</div>
+            <h1 class="text-xl font-bold tracking-tighter text-slate-900">VibePhones<span class="text-blue-600 italic">RD</span></h1>
         </div>
+        <a href="https://wa.me/8098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
     </header>
 
-    <main>
-        <div class="max-w-7xl mx-auto px-6 pt-10 text-center">
-            <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter mb-10">iPhones de Colección</h2>
-            
-            <div id="grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20"></div>
-
-            <section class="max-w-xl mx-auto bg-white p-8 rounded-[35px] shadow-2xl border border-slate-100 text-left">
-                <h3 class="text-2xl font-black text-center mb-4 italic text-slate-900 uppercase">VibePhones RD</h3>
-                <form action="https://formspree.io/f/mlgwedgv" method="POST" class="space-y-4">
-                    <input type="text" name="Nombre" placeholder="Tu nombre" required class="w-full p-4 rounded-2xl bg-slate-50 outline-none focus:ring-2 focus:ring-blue-500">
-                    <textarea name="Comentario" placeholder="¿Tienes alguna duda o comentario?" class="w-full p-4 rounded-2xl bg-slate-50 outline-none h-24 focus:ring-2 focus:ring-blue-500"></textarea>
-                    <button type="submit" class="btn-premium w-full py-4 rounded-2xl font-black text-white uppercase tracking-widest">Enviar Comentario</button>
-                </form>
-            </section>
+    <main class="max-w-7xl mx-auto p-6">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter">iPhones de Colección</h2>
         </div>
+        <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
     </main>
 
-    <div id="modal-carrito">
-        <div class="modal-content">
-            <button onclick="cerrarCarrito()" class="absolute top-4 right-4 text-slate-400 text-2xl"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="text-2xl font-black text-slate-900 mb-2 italic">Confirmar Pedido</h3>
-            <p id="equipo-seleccionado" class="text-blue-600 font-bold mb-6"></p>
-            
-            <form action="https://formspree.io/f/mlgwedgv" method="POST" class="space-y-4">
-                <input type="hidden" name="Equipo" id="input-equipo">
-                <input type="text" name="Nombre" placeholder="Nombre completo" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
-                <input type="email" name="Email" placeholder="Tu correo electrónico" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
-                <select name="MetodoPago" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
-                    <option value="">Forma de pago...</option>
-                    <option value="Transferencia">Transferencia Bancaria</option>
-                    <option value="Efectivo">Efectivo / Delivery</option>
-                    <option value="Tarjeta">Tarjeta de Crédito</option>
-                </select>
-                <button type="submit" class="btn-premium w-full py-5 rounded-2xl font-black text-white uppercase tracking-widest shadow-lg">Generar Recibo</button>
-            </form>
-        </div>
-    </div>
-
-    <footer class="footer-vibe">
-        <div class="max-w-7xl mx-auto text-center md:text-left grid grid-cols-1 md:grid-cols-2 gap-8">
+    <footer class="bg-slate-900 text-white p-10 mt-20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
             <div>
-                <div class="text-3xl font-black">VibePhones<span class="text-blue-400 italic">RD</span></div>
-                <p class="text-slate-500 text-sm mt-2 font-bold uppercase tracking-widest">© 2026 Todos los derechos reservados</p>
+                <h3 class="text-2xl font-black mb-4 uppercase">VibePhones<span class="text-blue-400 italic">RD</span></h3>
+                <p class="text-slate-400 text-sm">Calidad Premium Grado A+. La mejor experiencia en iPhones de República Dominicana.</p>
+            </div>
+            <div>
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Ubicación Actual</h4>
+                <div class="rounded-[25px] overflow-hidden h-48 border border-slate-700 shadow-2xl">
+                    <iframe id="mapa-publico" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
             </div>
             <div class="md:text-right">
-                <p class="text-blue-400 font-bold text-xs uppercase mb-2 tracking-widest">Contacto</p>
-                <a href="tel:8098182320" class="text-2xl font-black text-white underline decoration-blue-500">809-818-2320</a>
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Contacto Directo</h4>
+                <a href="tel:8098182320" class="text-3xl font-black underline decoration-blue-500 decoration-4 italic">809-818-2320</a>
             </div>
         </div>
     </footer>
 
+    <div id="modal-carrito">
+        <div class="bg-white w-full max-w-md rounded-[35px] p-8 shadow-2xl relative">
+            <button onclick="cerrarCarrito()" class="absolute top-6 right-6 text-slate-400 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-2xl font-black text-slate-900 mb-2 italic text-center">Formulario de Compra</h3>
+            <p id="info-equipo" class="text-blue-600 font-bold mb-6 text-center text-sm"></p>
+            <form action="https://formspree.io/f/mlgwedgv" method="POST" class="space-y-4">
+                <input type="hidden" name="Articulo" id="hidden-equipo">
+                <input type="text" name="Cliente" placeholder="Nombre completo" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
+                <input type="email" name="Correo" placeholder="Correo electrónico" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
+                <select name="FormaPago" required class="w-full p-4 rounded-2xl bg-slate-100 outline-none">
+                    <option value="Transferencia">Transferencia Bancaria</option>
+                    <option value="Efectivo">Efectivo / Delivery</option>
+                </select>
+                <button type="submit" class="w-full btn-vibe py-5 rounded-2xl font-black text-white uppercase tracking-widest shadow-lg">Generar Recibo Digital</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="panel-admin">
+        <div class="max-w-2xl mx-auto">
+            <div class="flex justify-between items-center mb-8 border-b pb-4">
+                <h2 class="text-3xl font-black italic">Vibe<span class="text-blue-600">Admin</span></h2>
+                <button onclick="cerrarAdmin()" class="bg-red-500 text-white px-6 py-2 rounded-xl font-bold uppercase text-xs">Salir del Panel</button>
+            </div>
+            
+            <div class="bg-slate-50 p-6 rounded-[35px] border border-slate-200 mb-10 space-y-4 shadow-sm">
+                <h4 class="font-bold text-slate-400 text-[10px] uppercase tracking-widest">Publicar Nuevo Equipo</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="ad-nombre" placeholder="Nombre del iPhone" class="p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
+                    <input type="number" id="ad-precio" placeholder="Precio RD$" class="p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
+                </div>
+                <input type="text" id="ad-img" placeholder="Link (URL) de la Foto del iPhone" class="w-full p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="ad-cap" placeholder="Almacenamiento (ej: 128GB)" class="p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
+                    <input type="text" id="ad-det" placeholder="Detalles (Batería, Grado)" class="p-4 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
+                </div>
+                <h4 class="font-bold text-slate-400 text-[10px] uppercase tracking-widest mt-4">Actualizar Ubicación del Mapa</h4>
+                <input type="text" id="ad-dir" placeholder="Escribe la dirección (ej: Piantini, Santo Domingo)" class="w-full p-4 rounded-2xl border-none ring-1 ring-blue-200 outline-none">
+                <button onclick="guardarTodo()" class="w-full btn-vibe py-5 rounded-2xl text-white font-black uppercase tracking-widest shadow-xl">Guardar Cambios y Publicar</button>
+            </div>
+
+            <h4 class="font-bold text-slate-900 text-sm mb-4">Artículos en Venta (Eliminar Vendidos):</h4>
+            <div id="admin-lista-borrar" class="space-y-3"></div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
         const firebaseConfig = { apiKey: "AIzaSyCdn4m4n3Aezuttg8E31DmipXLz0dBueU", projectId: "tiendacelularesrd-f0795", appId: "1:264926688681:web:4d2c5aa50ea2bce0e100b8" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- FUNCIONES CARRITO ---
-        window.abrirCarrito = (nombre, precio) => {
-            document.getElementById('equipo-seleccionado').innerText = nombre + " - RD$ " + precio;
-            document.getElementById('input-equipo').value = nombre + " (RD$ " + precio + ")";
-            document.getElementById('modal-carrito').style.display = 'flex';
-        };
-        window.cerrarCarrito = () => {
-            document.getElementById('modal-carrito').style.display = 'none';
-        };
-
-        // --- ADMIN (5 CLICS LOGO) ---
+        // --- ACCESO ADMIN ---
         let clicks = 0;
-        document.getElementById('admin-trigger').onclick = () => {
+        window.accederAdmin = () => {
             clicks++;
             if(clicks === 5) {
-                if(prompt("Clave:") === "Avd121094") {
-                    const n = prompt("Nombre:"), p = prompt("Precio:"), img = prompt("URL Foto:"), cap = prompt("Almacenamiento:"), det = prompt("Detalles:");
-                    if(n && p && img) addDoc(collection(db, "productos"), { n, p, imgs:[img], cap, det, creado: Date.now() });
+                if(prompt("Introduce Clave Maestra:") === "Avd121094") {
+                    document.getElementById('panel-admin').style.display = 'block';
                 }
                 clicks = 0;
             }
+            setTimeout(() => clicks = 0, 2000);
+        };
+        window.cerrarAdmin = () => document.getElementById('panel-admin').style.display = 'none';
+
+        // --- GUARDAR Y BORRAR ---
+        window.guardarTodo = async () => {
+            const n = document.getElementById('ad-nombre').value, p = document.getElementById('ad-precio').value, 
+                  img = document.getElementById('ad-img').value, cap = document.getElementById('ad-cap').value,
+                  det = document.getElementById('ad-det').value, dir = document.getElementById('ad-dir').value;
+
+            if(n && p && img) {
+                await addDoc(collection(db, "productos"), { n, p, imgs:[img], cap, det, creado: Date.now() });
+                if(dir) localStorage.setItem('vibe_dir', dir);
+                alert("¡Publicado con éxito!");
+                location.reload();
+            } else if (dir) {
+                localStorage.setItem('vibe_dir', dir);
+                alert("¡Mapa Actualizado!");
+                location.reload();
+            }
         };
 
-        // --- CARGA PRODUCTOS ---
+        window.borrarItem = async (id) => {
+            if(confirm("¿Eliminar este iPhone de la tienda?")) {
+                await deleteDoc(doc(db, "productos", id));
+            }
+        };
+
+        // --- CARGA DE DATOS ---
+        const dirActual = localStorage.getItem('vibe_dir') || "Santo Domingo, RD";
+        document.getElementById('mapa-publico').src = `https://maps.google.com/maps?q=${encodeURIComponent(dirActual)}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
-            const grid = document.getElementById('grid-container');
-            grid.innerHTML = "";
+            const grid = document.getElementById('grid-productos'); 
+            const listaBorrar = document.getElementById('admin-lista-borrar');
+            grid.innerHTML = ""; listaBorrar.innerHTML = "";
+            
             snap.forEach(s => {
-                const d = s.data();
-                const cleanPrice = Number(d.p).toLocaleString();
+                const d = s.data(); const id = s.id; const pr = Number(d.p).toLocaleString();
+                // Público
                 grid.innerHTML += `
-                    <div class="card-phone">
+                    <div class="card-phone shadow-lg flex flex-col h-full">
                         <img src="${d.imgs[0]}" class="h-64 w-full object-cover">
-                        <div class="p-5 text-left">
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-lg text-slate-900">${d.n}</h3>
-                                <span class="tag-storage">${d.cap || 'A+'}</span>
-                            </div>
-                            <p class="text-blue-600 font-black text-xl italic mb-4">RD$ ${cleanPrice}</p>
-                            <button onclick="abrirCarrito('${d.n}', '${cleanPrice}')" class="btn-premium text-white w-full py-3 rounded-xl font-black text-xs uppercase shadow-md">
-                                <i class="fa-solid fa-cart-shopping mr-2"></i> Agregar al Carrito
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="font-black text-slate-900 text-lg mb-1">${d.n} <span class="text-[10px] text-blue-500 ml-1 uppercase">${d.cap || ''}</span></h3>
+                            <p class="text-2xl font-black text-blue-600 italic mb-2">RD$ ${pr}</p>
+                            <p class="text-[11px] text-slate-400 mb-6 font-medium">${d.det || 'Grado A+'}</p>
+                            <button onclick="abrirCarrito('${d.n}', '${pr}')" class="mt-auto w-full btn-vibe py-4 rounded-2xl text-white font-black text-xs uppercase shadow-md">
+                                <i class="fa-solid fa-cart-shopping mr-2"></i> Carrito
                             </button>
                         </div>
                     </div>`;
+                // Admin
+                listaBorrar.innerHTML += `
+                    <div class="flex justify-between items-center bg-white p-4 rounded-2xl border shadow-sm">
+                        <span class="text-xs font-bold text-slate-700">${d.n} - RD$ ${pr}</span>
+                        <button onclick="borrarItem('${id}')" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg text-[10px] font-bold uppercase">Borrar</button>
+                    </div>`;
             });
         });
+
+        window.abrirCarrito = (n, p) => {
+            document.getElementById('info-equipo').innerText = n + " - RD$ " + p;
+            document.getElementById('hidden-equipo').value = n + " (" + p + ")";
+            document.getElementById('modal-carrito').style.display = 'flex';
+        };
+        window.cerrarCarrito = () => document.getElementById('modal-carrito').style.display = 'none';
     </script>
 </body>
-</html>
+    </html>
