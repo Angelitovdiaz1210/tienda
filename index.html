@@ -10,29 +10,18 @@
         html, body { height: 100%; margin: 0; }
         body { display: flex; flex-direction: column; background: #0f172a; font-family: sans-serif; }
         main { flex: 1 0 auto; background: #f8fafc; border-radius: 0 0 40px 40px; padding-bottom: 60px; }
-        .footer-vibe { flex-shrink: 0; background: #0f172a; color: white; padding: 50px 20px; position: relative; }
-        .btn-premium { background: linear-gradient(90deg, #2563eb, #7c3aed); border: none; }
-        .card-phone { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        
-        /* BOTÓN DE ADMIN MEJORADO */
-        #admin-btn {
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 60px;
-            height: 60px;
-            background: transparent;
-            border: none;
-            z-index: 1000;
-        }
+        .footer-vibe { flex-shrink: 0; background: #0b1120; color: white; padding: 50px 20px; border-top: 1px solid #1e293b; }
+        .btn-premium { background: linear-gradient(90deg, #1d4ed8, #7c3aed); border: none; }
+        .card-phone { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
+        .tag-storage { background: #eff6ff; color: #1e40af; padding: 2px 8px; border-radius: 8px; font-size: 10px; font-weight: 800; }
     </style>
 </head>
 <body>
 
     <header class="bg-white sticky top-0 z-50 border-b p-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg">V</div>
+            <div id="admin-trigger" class="flex items-center gap-2 cursor-pointer">
+                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-xl">V</div>
                 <h1 class="text-xl font-bold tracking-tighter">VibePhones<span class="text-blue-600 italic">RD</span></h1>
             </div>
             <a href="https://wa.me/8098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
@@ -42,53 +31,40 @@
     <main>
         <div class="max-w-7xl mx-auto px-6 pt-10 text-center">
             <h2 class="text-4xl font-black text-slate-900 italic tracking-tighter mb-10">iPhones de Colección</h2>
+            
             <div id="grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
 
             <section class="max-w-xl mx-auto bg-white p-8 rounded-[35px] shadow-2xl mt-20 border border-slate-100 text-left">
-                <h3 class="text-2xl font-bold text-center mb-6 italic text-slate-900">Confirmación de Pago</h3>
+                <h3 class="text-2xl font-bold text-center mb-2 italic text-slate-900">VIBEPHONES</h3>
+                <p class="text-center text-slate-500 mb-6 font-medium">Envío de Recibo Digital</p>
                 <form action="https://formspree.io/f/mlgwedgv" method="POST" class="space-y-4">
-                    <input type="text" name="Nombre" placeholder="Tu nombre" required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-blue-500">
-                    <textarea name="Mensaje" placeholder="Detalles de tu pedido..." required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none h-32 focus:ring-2 focus:ring-blue-500"></textarea>
-                    <button type="submit" class="btn-premium w-full py-5 rounded-2xl font-black text-white uppercase tracking-widest shadow-lg">Enviar Recibo</button>
+                    <input type="text" name="Nombre" placeholder="Tu nombre completo" required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none focus:ring-2 focus:ring-blue-500">
+                    <textarea name="Mensaje" placeholder="Indica el equipo y método de pago..." required class="w-full p-4 rounded-2xl bg-slate-50 border-none outline-none h-32 focus:ring-2 focus:ring-blue-500"></textarea>
+                    <button type="submit" class="btn-premium w-full py-5 rounded-2xl font-black text-white uppercase tracking-widest shadow-lg">Enviar Información</button>
                 </form>
             </section>
         </div>
     </main>
 
     <footer class="footer-vibe">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left border-b border-slate-800 pb-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left">
             <div>
                 <div class="text-3xl font-black mb-4">VibePhones<span class="text-blue-400 italic">RD</span></div>
-                <p class="text-slate-400 text-sm">Calidad Premium Grado A+ en RD.</p>
                 <div class="flex justify-center md:justify-start gap-6 mt-6">
                     <a href="https://wa.me/8098182320" class="text-green-400 text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
                     <a href="https://www.instagram.com/vibephonesrd_/" class="text-pink-400 text-2xl"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
-            
             <div>
                 <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Ubicación</h4>
-                <a href="https://maps.app.goo.gl/3Q8U5P5Q5p5p5p5p5" target="_blank" class="inline-block bg-slate-800 px-6 py-4 rounded-2xl border border-slate-700 hover:bg-slate-700 transition-all">
-                    <i class="fa-solid fa-location-dot text-blue-400 mr-2"></i> Ver en Google Maps
-                </a>
+                <p class="text-slate-400 text-sm italic">Santo Domingo, RD</p>
             </div>
-
             <div class="md:text-right">
-                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest">Contacto Directo</h4>
-                <a href="tel:8098182320" class="text-2xl font-black text-white underline decoration-blue-500 italic">809-818-2320</a>
+                <h4 class="text-blue-400 font-bold text-xs uppercase mb-4 tracking-widest text-white">Llámanos</h4>
+                <a href="tel:8098182320" class="text-2xl font-black text-white underline decoration-blue-500">809-818-2320</a>
             </div>
         </div>
-        
-        <div class="text-center mt-10">
-            <p class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.4em]">© 2026 VibePhones RD - Oficial</p>
-        </div>
-        
-        <button id="admin-btn" onclick="openAdmin()"></button>
     </footer>
-
-    <a href="https://wa.me/8098182320" class="fixed bottom-6 right-6 w-16 h-16 bg-green-500 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl z-[100] hover:scale-110 transition-transform">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -98,32 +74,41 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // --- ADMIN CON MÁS DETALLES ---
         let clicks = 0;
-        window.openAdmin = function() {
+        document.getElementById('admin-trigger').onclick = () => {
             clicks++;
             if(clicks === 5) {
-                let pass = prompt("Acceso Administrador:");
-                if(pass === "Avd121094") {
-                    const n = prompt("Nombre iPhone:"), p = prompt("Precio:"), img = prompt("Link Imagen:");
-                    if(n && p && img) addDoc(collection(db, "productos"), { n, p, imgs: [img], cat: 'phones', creado: Date.now() });
+                if(prompt("Clave:") === "Avd121094") {
+                    const n = prompt("Nombre (ej: iPhone 13 Pro):");
+                    const p = prompt("Precio (ej: 35500):");
+                    const img = prompt("URL de la Imagen:");
+                    const cap = prompt("Almacenamiento (ej: 128GB):");
+                    const det = prompt("Detalles (ej: Grado A+, Batería 100%):");
+                    if(n && p && img) addDoc(collection(db, "productos"), { n, p, imgs:[img], cap, det, creado: Date.now() });
                 }
                 clicks = 0;
             }
-            setTimeout(() => { clicks = 0; }, 2000);
         };
 
+        // --- CARGA DE PRODUCTOS ---
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const grid = document.getElementById('grid-container');
             grid.innerHTML = "";
             snap.forEach(s => {
                 const d = s.data();
+                const msg = encodeURIComponent(`Hola VibePhones, quiero confirmar la compra de: ${d.n} (${d.cap || ''}) por RD$ ${Number(d.p).toLocaleString()}`);
                 grid.innerHTML += `
-                    <div class="card-phone">
-                        <img src="${d.imgs[0]}" class="h-72 w-full object-cover">
-                        <div class="p-6 text-left">
-                            <h3 class="font-bold text-xl text-slate-900">${d.n}</h3>
-                            <p class="text-blue-600 font-black text-2xl mt-1 italic">RD$ ${Number(d.p).toLocaleString()}</p>
-                            <a href="https://wa.me/8098182320" target="_blank" class="btn-premium text-white block text-center mt-6 py-4 rounded-2xl font-black text-xs uppercase shadow-md">Apartar</a>
+                    <div class="card-phone shadow-lg">
+                        <img src="${d.imgs[0]}" class="h-64 w-full object-cover">
+                        <div class="p-5 text-left">
+                            <div class="flex justify-between items-start mb-1">
+                                <h3 class="font-bold text-lg text-slate-900">${d.n}</h3>
+                                ${d.cap ? `<span class="tag-storage">${d.cap}</span>` : ''}
+                            </div>
+                            <p class="text-blue-600 font-black text-xl italic mb-2">RD$ ${Number(d.p).toLocaleString()}</p>
+                            <p class="text-slate-500 text-xs mb-4">${d.det || 'Grado A+ Premium'}</p>
+                            <a href="https://wa.me/8098182320?text=${msg}" target="_blank" class="btn-premium text-white block text-center py-3 rounded-xl font-black text-xs uppercase shadow-md">Confirmar Compra</a>
                         </div>
                     </div>`;
             });
