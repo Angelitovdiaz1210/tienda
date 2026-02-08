@@ -21,15 +21,13 @@
         .slide { width: 20%; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* CAPA PARA QUE NO OPAQUE EL CONTENIDO (Neblina) */
         .bg-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
-            background: rgba(241, 245, 249, 0.85); /* Controla aquí qué tan transparente es el fondo */
+            background: rgba(241, 245, 249, 0.88); 
         }
 
-        /* MARCA DE AGUA MUY SUAVE */
         .watermark-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -47,7 +45,6 @@
             position: relative;
         }
 
-        /* PRODUCTOS CON FONDO SÓLIDO PARA CLARIDAD */
         .product-card {
             background: white;
             border-radius: 25px;
@@ -65,11 +62,13 @@
             100% { transform: translateX(0); }
         }
 
-        #modal-recibo {
+        #modal-recibo, #panel-admin {
             display: none; position: fixed; inset: 0;
-            background: rgba(15, 23, 42, 0.9); z-index: 999;
+            background: rgba(15, 23, 42, 0.95); z-index: 999;
             align-items: center; justify-content: center; padding: 20px;
         }
+
+        #panel-admin { background: white; flex-direction: column; overflow-y: auto; display: none; }
     </style>
 </head>
 <body class="antialiased">
@@ -88,7 +87,7 @@
 
     <div class="app-shell">
         <header class="bg-white/95 backdrop-blur-sm p-5 sticky top-0 z-[100] border-b flex justify-between items-center shadow-sm">
-            <div onclick="abrirAdmin()" class="flex items-center gap-3 cursor-pointer">
+            <div id="logo-vibe" class="flex items-center gap-3 cursor-pointer">
                 <div class="w-10 h-10 bg-slate-900 rounded-2xl flex items-center justify-center text-white font-black text-xl">V</div>
                 <h1 class="text-xl font-black text-slate-900 tracking-tighter uppercase">VibePhones RD</h1>
             </div>
@@ -111,11 +110,11 @@
             <div id="lista-productos" class="grid grid-cols-2 gap-4 p-5"></div>
 
             <div class="p-5">
-                <div class="bg-white p-5 rounded-[2.5rem] shadow-sm border border-slate-200">
-                    <h3 class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest text-center">Nuestra Ubicación</h3>
-                    <div class="rounded-[2rem] overflow-hidden h-72 border border-slate-100">
+                <div class="bg-white p-4 rounded-[2rem] shadow-sm border border-slate-200">
+                    <h3 class="text-[9px] font-black text-slate-400 uppercase mb-3 tracking-widest text-center">Ubicación</h3>
+                    <div class="rounded-[1.5rem] overflow-hidden h-48 border border-slate-100">
                         <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.123456789!2d-69.938!3d18.472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDI4JzE5LjIiTiA2OcKwNTYnMTYuOCJX!5e0!3m2!1ses!2sdo!4v1625500000000!5m2!1ses!2sdo1" 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.123456789!2d-69.938!3d18.472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDI4JzE5LjIiTiA2OcKwNTYnMTYuOCJX!5e0!3m2!1ses!2sdo!4v1625500000000!5m2!1ses!2sdo2" 
                             width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
                         </iframe>
                     </div>
@@ -136,25 +135,42 @@
     </div>
 
     <div id="modal-recibo">
-        <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-[350px] text-center shadow-2xl">
-            <h2 class="text-xs font-black uppercase text-slate-400 mb-6 tracking-widest border-b pb-2">Factura de Orden</h2>
+        <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-[350px] text-center">
+            <h2 class="text-xs font-black uppercase text-slate-400 mb-6 tracking-widest border-b pb-2">Factura Digital</h2>
             <div class="text-left space-y-4 mb-8">
                 <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Cliente</span><p id="fac-nombre" class="text-sm font-black text-slate-900"></p></div>
                 <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Equipo</span><p id="fac-equipo" class="text-sm font-black text-blue-600"></p></div>
-                <div class="bg-slate-50 p-5 rounded-2xl text-center border border-slate-100">
+                <div class="bg-slate-50 p-5 rounded-2xl text-center border">
                     <span class="text-[9px] font-bold text-slate-400 block uppercase">Total</span>
                     <p id="fac-total" class="text-3xl font-black text-slate-900"></p>
                 </div>
             </div>
-            <button onclick="confirmarPedido()" class="w-full bg-[#25D366] py-5 rounded-2xl text-white font-black text-xs uppercase shadow-xl hover:scale-105 transition-transform">
-                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Confirmar Pedido
+            <button onclick="confirmarPedido()" class="w-full bg-[#25D366] py-5 rounded-2xl text-white font-black text-xs uppercase shadow-xl">
+                Confirmar Pedido
             </button>
+        </div>
+    </div>
+
+    <div id="panel-admin" class="p-6">
+        <div class="w-full max-w-md bg-white">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-black uppercase italic">Admin Panel</h2>
+                <button onclick="cerrarAdmin()" class="text-red-500 font-bold">CERRAR</button>
+            </div>
+            <div class="space-y-4 mb-8">
+                <input type="text" id="ad-nombre" placeholder="Nombre del Equipo" class="w-full p-3 border rounded-xl outline-none">
+                <input type="number" id="ad-precio" placeholder="Precio RD$" class="w-full p-3 border rounded-xl outline-none">
+                <input type="file" id="ad-file" accept="image/*" class="w-full text-xs">
+                <button onclick="subirProducto()" id="btn-subir" class="w-full bg-blue-600 text-white py-4 rounded-xl font-black uppercase">Publicar Equipo</button>
+            </div>
+            <h3 class="font-bold border-t pt-4 mb-4">Gestionar Inventario:</h3>
+            <div id="admin-lista-borrar" class="space-y-2 max-h-60 overflow-y-auto"></div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
         const firebaseConfig = { 
             apiKey: "AIzaSyCdn4m4n3Aezuttg8E31DmipXLz0dBueU", 
@@ -164,23 +180,71 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Lógica de los 5 clics para administración
+        let contadorClics = 0;
+        document.getElementById('logo-vibe').onclick = () => {
+            contadorClics++;
+            if(contadorClics === 5) {
+                const pass = prompt("Clave de Administrador:");
+                if(pass === "Avd121094") {
+                    document.getElementById('panel-admin').style.display = 'flex';
+                }
+                contadorClics = 0;
+            }
+            setTimeout(() => { contadorClics = 0; }, 3000); // Reinicia si no hace los 5 clics en 3 segundos
+        };
+
+        window.cerrarAdmin = () => document.getElementById('panel-admin').style.display = 'none';
+
+        // Subir Producto
+        window.subirProducto = async () => {
+            const f = document.getElementById('ad-file').files[0], n = document.getElementById('ad-nombre').value, p = document.getElementById('ad-precio').value;
+            if(!f || !n || !p) return alert("Completa todos los campos");
+            
+            const btn = document.getElementById('btn-subir');
+            btn.innerText = "Subiendo..."; btn.disabled = true;
+
+            const fd = new FormData(); fd.append("image", f);
+            const res = await fetch("https://api.imgbb.com/1/upload?key=6d302d99d3d3a1f1d9a2a904d9b7577e", { method: "POST", body: fd });
+            const data = await res.json();
+
+            await addDoc(collection(db, "productos"), { n, p, img: data.data.url, creado: Date.now() });
+            alert("Equipo publicado con éxito");
+            location.reload();
+        };
+
+        // Escuchar cambios en la base de datos
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const grid = document.getElementById('lista-productos');
-            grid.innerHTML = "";
-            snap.forEach(doc => {
-                const p = doc.data();
-                const precio = Number(p.p).toLocaleString();
+            const listaBorrar = document.getElementById('admin-lista-borrar');
+            grid.innerHTML = ""; listaBorrar.innerHTML = "";
+
+            snap.forEach(s => {
+                const d = s.data();
+                const id = s.id;
+                const precio = Number(d.p).toLocaleString();
+
                 grid.innerHTML += `
                     <div class="product-card flex flex-col">
-                        <img src="${p.img}" class="w-full h-40 object-contain p-4">
+                        <img src="${d.img}" class="w-full h-40 object-contain p-4">
                         <div class="p-4 pt-0">
-                            <h3 class="text-[9px] font-black uppercase text-slate-800 truncate mb-1">${p.n}</h3>
+                            <h3 class="text-[9px] font-black uppercase text-slate-800 truncate mb-1">${d.n}</h3>
                             <p class="text-blue-600 font-black text-sm mb-3">RD$ ${precio}</p>
-                            <button onclick="abrirFactura('${p.n}', '${precio}')" class="w-full bg-slate-900 text-white py-2.5 rounded-xl text-[9px] font-black uppercase tracking-tighter">Pedir</button>
+                            <button onclick="abrirFactura('${d.n}', '${precio}')" class="w-full bg-slate-900 text-white py-2.5 rounded-xl text-[9px] font-black uppercase tracking-tighter">Pedir</button>
                         </div>
+                    </div>`;
+
+                listaBorrar.innerHTML += `
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border">
+                        <span class="text-[10px] font-bold">${d.n}</span>
+                        <button onclick="borrarProd('${id}')" class="text-red-500 text-[10px] font-bold uppercase underline">Borrar</button>
                     </div>`;
             });
         });
+
+        window.borrarProd = async (id) => {
+            if(confirm("¿Seguro que quieres borrar este equipo?")) await deleteDoc(doc(db, "productos", id));
+        };
 
         window.abrirFactura = (n, p) => {
             const nombre = prompt("¿A nombre de quién?");
@@ -198,8 +262,6 @@
             const t = document.getElementById('fac-total').innerText;
             window.open(`https://wa.me/8098182320?text=📦 *ORDEN VIBEPHONES*%0A👤 *Cliente:* ${n}%0A📱 *Equipo:* ${e}%0A💰 *Monto:* ${t}`);
         };
-
-        window.abrirAdmin = () => { if(prompt("Acceso:") === "Avd121094") alert("Modo Admin Activado"); };
     </script>
 </body>
 </html>
