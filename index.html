@@ -8,79 +8,33 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* CARRUSEL DE FONDO SUTIL */
-        .bg-carousel {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -3; overflow: hidden;
-        }
-        .carousel-track {
-            display: flex; width: 500%; height: 100%;
-            animation: slideBG 30s infinite ease-in-out;
-        }
+        .bg-carousel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; overflow: hidden; }
+        .carousel-track { display: flex; width: 500%; height: 100%; animation: slideBG 30s infinite ease-in-out; }
         .slide { width: 20%; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: rgba(241, 245, 249, 0.9); }
+        .watermark-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='6' fill='rgba(15, 23, 42, 0.04)' font-family='Arial' font-weight='900' text-anchor='middle' transform='rotate(-35, 50, 50)'%3EVIBEPHONES RD%3C/text%3E%3C/svg%3E"); background-repeat: repeat; }
+        
+        @keyframes slideBG { 0%, 15% { transform: translateX(0); } 20%, 35% { transform: translateX(-20%); } 40%, 55% { transform: translateX(-40%); } 60%, 75% { transform: translateX(-60%); } 80%, 95% { transform: translateX(-80%); } 100% { transform: translateX(0); } }
 
-        .bg-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-            background: rgba(241, 245, 249, 0.88); 
-        }
-
-        .watermark-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='6' fill='rgba(15, 23, 42, 0.04)' font-family='Arial' font-weight='900' text-anchor='middle' transform='rotate(-35, 50, 50)'%3EVIBEPHONES RD%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
-        }
-
-        .app-shell {
-            max-width: 500px;
-            margin: 0 auto;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-        }
-
-        @keyframes slideBG {
-            0%, 15% { transform: translateX(0); }
-            20%, 35% { transform: translateX(-20%); }
-            40%, 55% { transform: translateX(-40%); }
-            60%, 75% { transform: translateX(-60%); }
-            80%, 95% { transform: translateX(-80%); }
-            100% { transform: translateX(0); }
-        }
-
-        #modal-recibo, #panel-admin {
-            display: none; position: fixed; inset: 0;
-            z-index: 999;
-            align-items: center; justify-content: center; padding: 20px;
-        }
-
+        .app-shell { max-width: 500px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
+        .product-card { background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(226, 232, 240, 0.8); }
+        
+        #modal-recibo, #panel-admin { display: none; position: fixed; inset: 0; z-index: 999; align-items: center; justify-content: center; padding: 20px; }
         #modal-recibo { background: rgba(15, 23, 42, 0.95); }
-        #panel-admin { background: white; flex-direction: column; overflow-y: auto; }
+        #panel-admin { background: white; flex-direction: column; overflow: hidden; }
+        .admin-content { width: 100%; max-width: 450px; height: 95vh; background: white; padding: 20px; display: flex; flex-direction: column; }
     </style>
 </head>
 <body class="antialiased">
 
     <div class="bg-carousel">
         <div class="carousel-track">
-            <div class="slide"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1000" alt="1"></div>
-            <div class="slide"><img src="https://images.unsplash.com/photo-1556656793-062ff987b483?w=1000" alt="2"></div>
-            <div class="slide"><img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=1000" alt="3"></div>
-            <div class="slide"><img src="https://images.unsplash.com/photo-1567581935884-3349723552ca?w=1000" alt="4"></div>
-            <div class="slide"><img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=1000" alt="5"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800" alt="1"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1556656793-062ff987b483?w=800" alt="2"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=800" alt="3"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1567581935884-3349723552ca?w=800" alt="4"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800" alt="5"></div>
         </div>
     </div>
     <div class="bg-overlay"></div>
@@ -88,73 +42,69 @@
 
     <div class="app-shell">
         <header class="bg-white/95 backdrop-blur-sm p-5 sticky top-0 z-[100] border-b flex justify-between items-center shadow-sm">
-            <div id="logo-vibe" class="flex items-center gap-3 cursor-pointer">
+            <div id="logo-vibe" class="flex items-center gap-3 cursor-pointer select-none">
                 <div class="w-10 h-10 bg-slate-900 rounded-2xl flex items-center justify-center text-white font-black text-xl">V</div>
                 <h1 class="text-xl font-black text-slate-900 tracking-tighter uppercase">VibePhones RD</h1>
             </div>
-            <a href="https://wa.me/8098182320" class="text-green-500 text-3xl">
-                <i class="fa-brands fa-whatsapp"></i>
-            </a>
+            <a href="https://wa.me/8098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
         </header>
 
         <main class="flex-grow pb-10">
             <div class="p-8 text-center">
-                <h2 class="text-slate-800 text-2xl font-black uppercase tracking-widest">Tienda Oficial</h2>
-                <p class="text-slate-500 font-bold text-xs uppercase tracking-tighter">Calidad Premium Grado A+</p>
+                <h2 class="text-slate-800 text-2xl font-black uppercase tracking-widest italic">Store Premium</h2>
+                <p class="text-slate-500 font-bold text-xs uppercase tracking-tighter">Equipos Garantizados</p>
             </div>
 
-            <div class="mx-5 p-5 bg-white border-2 border-amber-400 rounded-[2rem] text-center shadow-sm">
-                <h3 class="text-amber-600 font-black text-[10px] uppercase mb-1">⚠️ IMPORTANTE</h3>
-                <p class="text-xs text-slate-700 font-bold">Equipos por pedido: 70% al solicitar y 30% contra entrega.</p>
-            </div>
-
-            <div id="lista-productos" class="grid grid-cols-2 gap-4 p-5"></div>
+            <div id="lista-productos" class="grid grid-cols-1 gap-6 px-5"></div>
         </main>
 
         <footer class="bg-slate-900 text-white p-10 rounded-t-[3rem] text-center mt-auto">
             <h2 class="text-2xl font-black italic text-blue-500 mb-4 tracking-tighter">VibePhones RD</h2>
-            <p class="text-[11px] text-slate-400 leading-relaxed italic mb-8 px-4">
-                "En VibePhones RD nos dedicamos a la distribución premium de tecnología móvil en República Dominicana. Nuestra misión es conectar a nuestros clientes con equipos Grado A+."
-            </p>
             <div class="space-y-3 text-xs font-bold border-t border-white/10 pt-8 text-slate-300">
-                <p><i class="fa-solid fa-phone mr-2"></i> 809-818-2320</p>
-                <p><i class="fa-solid fa-location-dot mr-2"></i> Santo Domingo, República Dominicana</p>
+                <p>📞 809-818-2320 | Santo Domingo, RD</p>
             </div>
         </footer>
     </div>
 
-    <div id="modal-recibo">
-        <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-[350px] text-center shadow-2xl">
-            <h2 class="text-xs font-black uppercase text-slate-400 mb-6 tracking-widest border-b pb-2">Factura Digital</h2>
-            <div class="text-left space-y-4 mb-8">
-                <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Cliente</span><p id="fac-nombre" class="text-sm font-black text-slate-900"></p></div>
-                <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Equipo</span><p id="fac-equipo" class="text-sm font-black text-blue-600"></p></div>
-                <div class="bg-slate-50 p-5 rounded-2xl text-center border">
-                    <span class="text-[9px] font-bold text-slate-400 block uppercase">Total</span>
-                    <p id="fac-total" class="text-3xl font-black text-slate-900"></p>
-                </div>
+    <div id="panel-admin">
+        <div class="admin-content rounded-[2.5rem] shadow-2xl overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-black uppercase italic">Admin Panel</h2>
+                <button onclick="cerrarAdmin()" class="bg-red-50 text-red-500 px-4 py-1 rounded-full font-bold">Cerrar</button>
             </div>
-            <button onclick="confirmarPedido()" class="w-full bg-[#25D366] py-5 rounded-2xl text-white font-black text-xs uppercase shadow-xl hover:scale-105 transition-transform">
-                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Confirmar Pedido
-            </button>
-            <button onclick="document.getElementById('modal-recibo').style.display='none'" class="mt-4 text-slate-400 text-[10px] font-bold uppercase">Cerrar</button>
+
+            <div class="bg-slate-50 p-5 rounded-3xl space-y-3 mb-6">
+                <input type="text" id="ad-nombre" placeholder="Nombre del Equipo" class="w-full p-3 rounded-xl border outline-none text-sm">
+                <input type="text" id="ad-precio" placeholder="Precio (Ej: 45,000)" class="w-full p-3 rounded-xl border outline-none text-sm">
+                <textarea id="ad-detalles" placeholder="Detalles (Ej: Batería 100%, 128GB, Color Blue)" class="w-full p-3 rounded-xl border outline-none text-sm h-20"></textarea>
+                
+                <div class="border-t pt-2 mt-2">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Imagen del equipo:</p>
+                    <input type="file" id="ad-file" class="text-xs mb-2">
+                    <p class="text-center text-[10px] font-bold text-slate-400">Ó PEGAR URL</p>
+                    <input type="text" id="ad-url" placeholder="https://ejemplo.com/foto.jpg" class="w-full p-3 rounded-xl border outline-none text-sm mt-1">
+                </div>
+
+                <button onclick="subirProducto()" id="btn-subir" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black uppercase text-xs mt-4">Publicar Producto</button>
+            </div>
+
+            <h3 class="text-xs font-black uppercase mb-4 text-slate-400 tracking-widest">Inventario</h3>
+            <div id="admin-lista-borrar" class="space-y-3"></div>
         </div>
     </div>
 
-    <div id="panel-admin" class="p-6">
-        <div class="w-full max-w-md bg-white">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-black uppercase italic">Admin Panel</h2>
-                <button onclick="cerrarAdmin()" class="text-red-500 font-bold border border-red-500 px-3 py-1 rounded-lg">CERRAR</button>
+    <div id="modal-recibo">
+        <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-[350px] text-center shadow-2xl">
+            <h2 class="text-xs font-black uppercase text-slate-400 mb-6 border-b pb-2">Orden de Compra</h2>
+            <div class="text-left space-y-4 mb-8">
+                <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Cliente</span><p id="fac-nombre" class="text-sm font-black text-slate-900"></p></div>
+                <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Equipo</span><p id="fac-equipo" class="text-sm font-black text-blue-600"></p></div>
+                <div class="bg-slate-50 p-5 rounded-2xl text-center border border-slate-200">
+                    <span class="text-[9px] font-bold text-slate-400 block uppercase">Monto Total</span>
+                    <p id="fac-total" class="text-3xl font-black text-slate-900"></p>
+                </div>
             </div>
-            <div class="space-y-4 mb-8 bg-slate-50 p-4 rounded-2xl">
-                <input type="text" id="ad-nombre" placeholder="Nombre del Equipo" class="w-full p-3 border rounded-xl outline-none">
-                <input type="number" id="ad-precio" placeholder="Precio RD$" class="w-full p-3 border rounded-xl outline-none">
-                <input type="file" id="ad-file" accept="image/*" class="w-full text-xs">
-                <button onclick="subirProducto()" id="btn-subir" class="w-full bg-blue-600 text-white py-4 rounded-xl font-black uppercase shadow-lg">Publicar Equipo</button>
-            </div>
-            <h3 class="font-black text-sm uppercase text-slate-400 mb-4 border-t pt-4">Inventario Actual:</h3>
-            <div id="admin-lista-borrar" class="space-y-2 max-h-80 overflow-y-auto"></div>
+            <button onclick="confirmarPedido()" class="w-full bg-[#25D366] py-5 rounded-2xl text-white font-black text-xs uppercase shadow-xl">Confirmar WhatsApp</button>
         </div>
     </div>
 
@@ -162,91 +112,82 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
-        const firebaseConfig = { 
-            apiKey: "AIzaSyCdn4m4n3Aezuttg8E31DmipXLz0dBueU", 
-            projectId: "tiendacelularesrd-f0795", 
-            appId: "1:264926688681:web:4d2c5aa50ea2bce0e100b8" 
-        };
+        const firebaseConfig = { apiKey: "AIzaSyCdn4m4n3Aezuttg8E31DmipXLz0dBueU", projectId: "tiendacelularesrd-f0795", appId: "1:264926688681:web:4d2c5aa50ea2bce0e100b8" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Lógica de los 5 clics para administración
-        let contadorClics = 0;
-        document.getElementById('logo-vibe').onclick = () => {
-            contadorClics++;
-            if(contadorClics === 5) {
-                const pass = prompt("Clave de Administrador:");
-                if(pass === "Avd121094") {
-                    document.getElementById('panel-admin').style.display = 'flex';
-                }
-                contadorClics = 0;
-            }
-            setTimeout(() => { contadorClics = 0; }, 3000);
-        };
-
+        // 5 clics para Admin
+        let clics = 0;
+        document.getElementById('logo-vibe').onclick = () => { clics++; if(clics === 5) { if(prompt("Pass:") === "Avd121094") document.getElementById('panel-admin').style.display = 'flex'; clics = 0; } setTimeout(()=>clics=0, 2000); };
         window.cerrarAdmin = () => document.getElementById('panel-admin').style.display = 'none';
 
-        // Subir Producto
         window.subirProducto = async () => {
-            const f = document.getElementById('ad-file').files[0], n = document.getElementById('ad-nombre').value, p = document.getElementById('ad-precio').value;
-            if(!f || !n || !p) return alert("Completa todos los campos");
+            const n = document.getElementById('ad-nombre').value, 
+                  p = document.getElementById('ad-precio').value,
+                  d = document.getElementById('ad-detalles').value,
+                  file = document.getElementById('ad-file').files[0],
+                  urlImg = document.getElementById('ad-url').value;
+            
+            if(!n || !p) return alert("Nombre y Precio obligatorios");
             
             const btn = document.getElementById('btn-subir');
             btn.innerText = "Subiendo..."; btn.disabled = true;
 
-            const fd = new FormData(); fd.append("image", f);
-            try {
+            let finalImg = urlImg;
+            if(file) {
+                const fd = new FormData(); fd.append("image", file);
                 const res = await fetch("https://api.imgbb.com/1/upload?key=6d302d99d3d3a1f1d9a2a904d9b7577e", { method: "POST", body: fd });
                 const data = await res.json();
-                await addDoc(collection(db, "productos"), { n, p, img: data.data.url, creado: Date.now() });
-                alert("Equipo publicado con éxito");
-                document.getElementById('ad-nombre').value = "";
-                document.getElementById('ad-precio').value = "";
-                document.getElementById('ad-file').value = "";
-            } catch (e) {
-                alert("Error al subir");
+                finalImg = data.data.url;
             }
-            btn.innerText = "Publicar Equipo"; btn.disabled = false;
+
+            if(!finalImg) { alert("Sube una foto o pega una URL"); btn.innerText="Publicar"; btn.disabled=false; return; }
+
+            await addDoc(collection(db, "productos"), { n, p, d, img: finalImg, creado: Date.now() });
+            alert("¡Equipo publicado!");
+            location.reload();
         };
 
-        // Escuchar cambios
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const grid = document.getElementById('lista-productos');
             const listaBorrar = document.getElementById('admin-lista-borrar');
             grid.innerHTML = ""; listaBorrar.innerHTML = "";
 
             snap.forEach(s => {
-                const d = s.data();
+                const data = s.data();
                 const id = s.id;
-                const precio = Number(d.p).toLocaleString();
 
+                // Vista Cliente (Modo Lista Detallada)
                 grid.innerHTML += `
-                    <div class="product-card flex flex-col animate-fade-in">
-                        <img src="${d.img}" class="w-full h-40 object-contain p-4">
-                        <div class="p-4 pt-0">
-                            <h3 class="text-[9px] font-black uppercase text-slate-800 truncate mb-1">${d.n}</h3>
-                            <p class="text-blue-600 font-black text-sm mb-3">RD$ ${precio}</p>
-                            <button onclick="abrirFactura('${d.n}', '${precio}')" class="w-full bg-slate-900 text-white py-2.5 rounded-xl text-[9px] font-black uppercase tracking-tighter">Pedir</button>
+                    <div class="product-card">
+                        <img src="${data.img}" class="w-full h-64 object-contain bg-white p-4">
+                        <div class="p-6">
+                            <h3 class="text-xl font-black text-slate-800 uppercase mb-1">${data.n}</h3>
+                            <p class="text-blue-600 font-black text-2xl mb-4 italic">RD$ ${data.p}</p>
+                            <div class="bg-slate-50 p-4 rounded-2xl mb-6 border border-slate-100">
+                                <p class="text-[10px] font-black text-slate-400 uppercase mb-2">Detalles Técnicos:</p>
+                                <p class="text-xs font-bold text-slate-600 leading-relaxed">${data.d || 'Consulte disponibilidad de colores y capacidad.'}</p>
+                            </div>
+                            <button onclick="abrirFactura('${data.n}', '${data.p}')" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-lg">Solicitar Ahora</button>
                         </div>
                     </div>`;
 
+                // Vista Admin
                 listaBorrar.innerHTML += `
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border mb-2">
-                        <div class="flex items-center gap-2">
-                            <img src="${d.img}" class="w-8 h-8 object-cover rounded">
-                            <span class="text-[10px] font-bold">${d.n}</span>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-2xl border">
+                        <div class="flex items-center gap-3">
+                            <img src="${data.img}" class="w-10 h-10 object-cover rounded-lg">
+                            <span class="text-[10px] font-bold truncate w-24">${data.n}</span>
                         </div>
-                        <button onclick="borrarProd('${id}')" class="text-red-500 text-[10px] font-black uppercase">Borrar</button>
+                        <button onclick="borrarProd('${id}')" class="text-red-500 font-bold px-3 py-1 bg-red-50 rounded-lg text-xs">BORRAR</button>
                     </div>`;
             });
         });
 
-        window.borrarProd = async (id) => {
-            if(confirm("¿Seguro que quieres borrar este equipo?")) await deleteDoc(doc(db, "productos", id));
-        };
-
+        window.borrarProd = async (id) => { if(confirm("¿Borrar?")) await deleteDoc(doc(db, "productos", id)); };
+        
         window.abrirFactura = (n, p) => {
-            const nombre = prompt("¿A nombre de quién?");
+            const nombre = prompt("¿Nombre del cliente?");
             if(nombre) {
                 document.getElementById('fac-nombre').innerText = nombre;
                 document.getElementById('fac-equipo').innerText = n;
@@ -256,11 +197,10 @@
         };
 
         window.confirmarPedido = () => {
-            const n = document.getElementById('fac-nombre').innerText;
-            const e = document.getElementById('fac-equipo').innerText;
-            const t = document.getElementById('fac-total').innerText;
+            const n = document.getElementById('fac-nombre').innerText, e = document.getElementById('fac-equipo').innerText, t = document.getElementById('fac-total').innerText;
             window.open(`https://wa.me/8098182320?text=📦 *ORDEN VIBEPHONES*%0A👤 *Cliente:* ${n}%0A📱 *Equipo:* ${e}%0A💰 *Monto:* ${t}`);
         };
     </script>
 </body>
-</html>
+                                                                                                        </html>
+                                                                                                        
