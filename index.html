@@ -64,11 +64,12 @@
 
         #modal-recibo, #panel-admin {
             display: none; position: fixed; inset: 0;
-            background: rgba(15, 23, 42, 0.95); z-index: 999;
+            z-index: 999;
             align-items: center; justify-content: center; padding: 20px;
         }
 
-        #panel-admin { background: white; flex-direction: column; overflow-y: auto; display: none; }
+        #modal-recibo { background: rgba(15, 23, 42, 0.95); }
+        #panel-admin { background: white; flex-direction: column; overflow-y: auto; }
     </style>
 </head>
 <body class="antialiased">
@@ -96,7 +97,7 @@
             </a>
         </header>
 
-        <main class="flex-grow">
+        <main class="flex-grow pb-10">
             <div class="p-8 text-center">
                 <h2 class="text-slate-800 text-2xl font-black uppercase tracking-widest">Tienda Oficial</h2>
                 <p class="text-slate-500 font-bold text-xs uppercase tracking-tighter">Calidad Premium Grado A+</p>
@@ -108,21 +109,9 @@
             </div>
 
             <div id="lista-productos" class="grid grid-cols-2 gap-4 p-5"></div>
-
-            <div class="p-5">
-                <div class="bg-white p-4 rounded-[2rem] shadow-sm border border-slate-200">
-                    <h3 class="text-[9px] font-black text-slate-400 uppercase mb-3 tracking-widest text-center">Ubicación</h3>
-                    <div class="rounded-[1.5rem] overflow-hidden h-48 border border-slate-100">
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.123456789!2d-69.938!3d18.472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDI4JzE5LjIiTiA2OcKwNTYnMTYuOCJX!5e0!3m2!1ses!2sdo!4v1625500000000!5m2!1ses!2sdo2" 
-                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
-                        </iframe>
-                    </div>
-                </div>
-            </div>
         </main>
 
-        <footer class="bg-slate-900 text-white p-10 rounded-t-[3rem] text-center">
+        <footer class="bg-slate-900 text-white p-10 rounded-t-[3rem] text-center mt-auto">
             <h2 class="text-2xl font-black italic text-blue-500 mb-4 tracking-tighter">VibePhones RD</h2>
             <p class="text-[11px] text-slate-400 leading-relaxed italic mb-8 px-4">
                 "En VibePhones RD nos dedicamos a la distribución premium de tecnología móvil en República Dominicana. Nuestra misión es conectar a nuestros clientes con equipos Grado A+."
@@ -135,7 +124,7 @@
     </div>
 
     <div id="modal-recibo">
-        <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-[350px] text-center">
+        <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-[350px] text-center shadow-2xl">
             <h2 class="text-xs font-black uppercase text-slate-400 mb-6 tracking-widest border-b pb-2">Factura Digital</h2>
             <div class="text-left space-y-4 mb-8">
                 <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Cliente</span><p id="fac-nombre" class="text-sm font-black text-slate-900"></p></div>
@@ -145,9 +134,10 @@
                     <p id="fac-total" class="text-3xl font-black text-slate-900"></p>
                 </div>
             </div>
-            <button onclick="confirmarPedido()" class="w-full bg-[#25D366] py-5 rounded-2xl text-white font-black text-xs uppercase shadow-xl">
-                Confirmar Pedido
+            <button onclick="confirmarPedido()" class="w-full bg-[#25D366] py-5 rounded-2xl text-white font-black text-xs uppercase shadow-xl hover:scale-105 transition-transform">
+                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Confirmar Pedido
             </button>
+            <button onclick="document.getElementById('modal-recibo').style.display='none'" class="mt-4 text-slate-400 text-[10px] font-bold uppercase">Cerrar</button>
         </div>
     </div>
 
@@ -155,16 +145,16 @@
         <div class="w-full max-w-md bg-white">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-black uppercase italic">Admin Panel</h2>
-                <button onclick="cerrarAdmin()" class="text-red-500 font-bold">CERRAR</button>
+                <button onclick="cerrarAdmin()" class="text-red-500 font-bold border border-red-500 px-3 py-1 rounded-lg">CERRAR</button>
             </div>
-            <div class="space-y-4 mb-8">
+            <div class="space-y-4 mb-8 bg-slate-50 p-4 rounded-2xl">
                 <input type="text" id="ad-nombre" placeholder="Nombre del Equipo" class="w-full p-3 border rounded-xl outline-none">
                 <input type="number" id="ad-precio" placeholder="Precio RD$" class="w-full p-3 border rounded-xl outline-none">
                 <input type="file" id="ad-file" accept="image/*" class="w-full text-xs">
-                <button onclick="subirProducto()" id="btn-subir" class="w-full bg-blue-600 text-white py-4 rounded-xl font-black uppercase">Publicar Equipo</button>
+                <button onclick="subirProducto()" id="btn-subir" class="w-full bg-blue-600 text-white py-4 rounded-xl font-black uppercase shadow-lg">Publicar Equipo</button>
             </div>
-            <h3 class="font-bold border-t pt-4 mb-4">Gestionar Inventario:</h3>
-            <div id="admin-lista-borrar" class="space-y-2 max-h-60 overflow-y-auto"></div>
+            <h3 class="font-black text-sm uppercase text-slate-400 mb-4 border-t pt-4">Inventario Actual:</h3>
+            <div id="admin-lista-borrar" class="space-y-2 max-h-80 overflow-y-auto"></div>
         </div>
     </div>
 
@@ -191,7 +181,7 @@
                 }
                 contadorClics = 0;
             }
-            setTimeout(() => { contadorClics = 0; }, 3000); // Reinicia si no hace los 5 clics en 3 segundos
+            setTimeout(() => { contadorClics = 0; }, 3000);
         };
 
         window.cerrarAdmin = () => document.getElementById('panel-admin').style.display = 'none';
@@ -205,15 +195,21 @@
             btn.innerText = "Subiendo..."; btn.disabled = true;
 
             const fd = new FormData(); fd.append("image", f);
-            const res = await fetch("https://api.imgbb.com/1/upload?key=6d302d99d3d3a1f1d9a2a904d9b7577e", { method: "POST", body: fd });
-            const data = await res.json();
-
-            await addDoc(collection(db, "productos"), { n, p, img: data.data.url, creado: Date.now() });
-            alert("Equipo publicado con éxito");
-            location.reload();
+            try {
+                const res = await fetch("https://api.imgbb.com/1/upload?key=6d302d99d3d3a1f1d9a2a904d9b7577e", { method: "POST", body: fd });
+                const data = await res.json();
+                await addDoc(collection(db, "productos"), { n, p, img: data.data.url, creado: Date.now() });
+                alert("Equipo publicado con éxito");
+                document.getElementById('ad-nombre').value = "";
+                document.getElementById('ad-precio').value = "";
+                document.getElementById('ad-file').value = "";
+            } catch (e) {
+                alert("Error al subir");
+            }
+            btn.innerText = "Publicar Equipo"; btn.disabled = false;
         };
 
-        // Escuchar cambios en la base de datos
+        // Escuchar cambios
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const grid = document.getElementById('lista-productos');
             const listaBorrar = document.getElementById('admin-lista-borrar');
@@ -225,7 +221,7 @@
                 const precio = Number(d.p).toLocaleString();
 
                 grid.innerHTML += `
-                    <div class="product-card flex flex-col">
+                    <div class="product-card flex flex-col animate-fade-in">
                         <img src="${d.img}" class="w-full h-40 object-contain p-4">
                         <div class="p-4 pt-0">
                             <h3 class="text-[9px] font-black uppercase text-slate-800 truncate mb-1">${d.n}</h3>
@@ -235,9 +231,12 @@
                     </div>`;
 
                 listaBorrar.innerHTML += `
-                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border">
-                        <span class="text-[10px] font-bold">${d.n}</span>
-                        <button onclick="borrarProd('${id}')" class="text-red-500 text-[10px] font-bold uppercase underline">Borrar</button>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-xl border mb-2">
+                        <div class="flex items-center gap-2">
+                            <img src="${d.img}" class="w-8 h-8 object-cover rounded">
+                            <span class="text-[10px] font-bold">${d.n}</span>
+                        </div>
+                        <button onclick="borrarProd('${id}')" class="text-red-500 text-[10px] font-black uppercase">Borrar</button>
                     </div>`;
             });
         });
