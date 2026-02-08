@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>VibePhones RD | Store Premium</title>
+    <title>VibePhones RD | Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        /* 1. CARRUSEL MULTIMARCA */
         .bg-carousel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; overflow: hidden; }
         .carousel-track { display: flex; width: 600%; height: 100%; animation: slidebg 30s infinite ease-in-out; }
         .slide { width: 16.66%; height: 100%; }
@@ -24,11 +23,9 @@
             100% { transform: translateX(0); }
         }
         .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: rgba(248, 250, 252, 0.85); backdrop-blur: 8px; }
-
-        /* 2. DISEÑO DE PRODUCTOS */
         .img-container { width: 100%; height: 170px; display: flex; align-items: center; justify-content: center; background: #fff; padding: 15px; }
         .product-img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .modal-box { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 15px; background: rgba(15, 23, 42, 0.95); backdrop-blur: 10px; }
+        .modal-box { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 15px; background: rgba(15, 23, 42, 0.98); backdrop-blur: 12px; }
     </style>
 </head>
 <body class="antialiased text-slate-900">
@@ -47,14 +44,14 @@
 
     <div class="max-w-[450px] mx-auto min-h-screen flex flex-col relative z-10">
         
-        <header class="bg-white/90 backdrop-blur-md p-5 sticky top-0 z-50 flex justify-between items-center border-b border-slate-200 shadow-sm">
-            <div id="logo-v" class="flex items-center gap-2 cursor-pointer select-none active:opacity-50">
-                <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black text-2xl shadow-lg">V</div>
+        <header class="bg-white/90 backdrop-blur-md p-5 sticky top-0 z-50 flex justify-between items-center border-b border-slate-200">
+            <button id="admin-trigger" class="flex items-center gap-2 outline-none active:opacity-40 transition-opacity text-left">
+                <div class="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black text-2xl">V</div>
                 <div>
                     <h1 class="text-sm font-black uppercase tracking-tighter leading-none">VibePhones RD</h1>
                     <p class="text-[8px] font-bold text-blue-600 uppercase tracking-widest">Premium Store</p>
                 </div>
-            </div>
+            </button>
             <a href="https://wa.me/18098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
         </header>
 
@@ -68,12 +65,12 @@
 
         <main id="lista-productos" class="p-2 grid grid-cols-2 gap-3 flex-grow"></main>
 
-        <section class="mx-4 mb-6 bg-white/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl">
-            <h2 class="font-black uppercase text-[10px] mb-4 text-center text-slate-400 tracking-widest">Opiniones</h2>
+        <section class="mx-4 mb-6 bg-white/90 backdrop-blur-md rounded-[2rem] p-6 shadow-xl border border-slate-100">
+            <h2 class="font-black uppercase text-[10px] mb-4 text-center tracking-widest">Opiniones</h2>
             <div id="comentarios-lista" class="space-y-4 mb-4 max-h-[200px] overflow-y-auto"></div>
             <div class="space-y-2">
-                <input type="text" id="com-nombre" placeholder="Nombre" class="w-full p-3 rounded-xl bg-slate-100 text-xs font-bold outline-none">
-                <textarea id="com-texto" placeholder="Comentario" class="w-full p-3 rounded-xl bg-slate-100 text-xs font-bold outline-none"></textarea>
+                <input type="text" id="com-nombre" placeholder="Nombre" class="w-full p-3 rounded-xl bg-slate-100 text-xs font-bold border-none outline-none">
+                <textarea id="com-texto" placeholder="Comentario" class="w-full p-3 rounded-xl bg-slate-100 text-xs font-bold border-none outline-none"></textarea>
                 <button onclick="subirComentario()" class="w-full bg-slate-900 text-white p-3 rounded-xl font-black text-[10px] uppercase">Publicar</button>
             </div>
         </section>
@@ -90,10 +87,6 @@
                         <i class="fa-solid fa-shield-heart text-blue-400"></i>
                         <p class="text-[10px] uppercase font-black">Garantía Asegurada</p>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <i class="fa-solid fa-location-dot text-blue-400"></i>
-                        <p class="text-[10px] uppercase font-black">Santo Domingo, RD</p>
-                    </div>
                 </div>
                 <div class="opacity-30 text-[9px] uppercase font-black border-t border-white/10 pt-6">
                     © 2026 VibePhones RD
@@ -106,9 +99,9 @@
         <div class="bg-white w-full max-w-[380px] rounded-[2.5rem] p-8">
             <h3 class="text-center font-black uppercase text-sm mb-6">Detalles de Orden</h3>
             <div class="space-y-3">
-                <input type="text" id="f-nombre" placeholder="Nombre completo" class="w-full p-4 bg-slate-50 rounded-2xl font-bold text-sm outline-none border">
-                <input type="email" id="f-email" placeholder="Email" class="w-full p-4 bg-slate-50 rounded-2xl font-bold text-sm outline-none border">
-                <select id="f-pago" class="w-full p-4 bg-slate-50 rounded-2xl font-bold text-xs outline-none border">
+                <input type="text" id="f-nombre" placeholder="Nombre completo" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm">
+                <input type="email" id="f-email" placeholder="Email" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm">
+                <select id="f-pago" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-xs">
                     <option value="" disabled selected>Pago</option>
                     <option value="Transferencia">Transferencia</option>
                     <option value="Efectivo">Efectivo</option>
@@ -124,14 +117,14 @@
     </div>
 
     <div id="modal-admin" class="modal-box">
-        <div class="bg-white w-full max-w-[380px] rounded-[2.5rem] p-8">
-            <h2 class="font-black uppercase text-center mb-6 text-slate-800">Panel Administrador</h2>
+        <div class="bg-white w-full max-w-[380px] rounded-[3rem] p-10 border-4 border-slate-900">
+            <h2 class="font-black uppercase text-center mb-6 text-xl">Panel Master</h2>
             <div class="space-y-4">
-                <input type="text" id="adm-n" placeholder="Marca y Modelo" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border">
-                <input type="number" id="adm-p" placeholder="Precio RD$" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border">
-                <input type="text" id="adm-i" placeholder="URL de Imagen" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border">
-                <button id="btn-save" class="w-full bg-slate-900 text-white p-4 rounded-2xl font-black uppercase">Publicar Equipo</button>
-                <button onclick="cerrarModales()" class="w-full text-slate-400 font-bold text-xs uppercase mt-2">Cerrar</button>
+                <input type="text" id="adm-n" placeholder="Marca y Modelo" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-2">
+                <input type="number" id="adm-p" placeholder="Precio RD$" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-2">
+                <input type="text" id="adm-i" placeholder="URL de Imagen" class="w-full p-4 bg-slate-50 rounded-2xl font-bold border-2">
+                <button id="btn-save" class="w-full bg-slate-900 text-white p-5 rounded-2xl font-black uppercase shadow-2xl">Subir Equipo</button>
+                <button onclick="cerrarModales()" class="w-full text-red-500 font-black text-xs uppercase mt-4">Salir del Panel</button>
             </div>
         </div>
     </div>
@@ -140,25 +133,27 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CONFIGURA TU FIREBASE AQUÍ
         const firebaseConfig = { /* TU CONFIG */ };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         emailjs.init("YFdmH2dv7ubtkjzod");
 
-        // --- SISTEMA DE CLICS ADMIN (CORREGIDO) ---
-        let count = 0;
-        let lastClick = 0;
-        document.getElementById('logo-v').addEventListener('click', () => {
-            const now = Date.now();
-            if (now - lastClick > 3000) count = 0; // Si pasan 3 seg, se reinicia
-            count++;
-            lastClick = now;
+        // --- SISTEMA DE CLICS ADMIN REFORZADO ---
+        let adminClicks = 0;
+        const trigger = document.getElementById('admin-trigger');
+
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            adminClicks++;
             
-            if(count === 5) {
+            if(adminClicks === 5) {
                 document.getElementById('modal-admin').style.display = 'flex';
-                count = 0;
+                adminClicks = 0;
             }
+
+            // Reiniciar si no se completan los clics en 3 segundos
+            clearTimeout(window.adminTimer);
+            window.adminTimer = setTimeout(() => { adminClicks = 0; }, 3000);
         });
 
         // --- PRODUCTOS ---
@@ -171,9 +166,9 @@
                 <div class="bg-white rounded-[2rem] overflow-hidden border border-slate-100 flex flex-col">
                     <div class="img-container"><img src="${p.img}" class="product-img" onerror="this.src='https://via.placeholder.com/200'"></div>
                     <div class="p-4 border-t border-slate-50">
-                        <h3 class="text-[9px] font-black uppercase text-slate-400 truncate mb-1">${p.nombre}</h3>
+                        <h3 class="text-[9px] font-black uppercase text-slate-400 mb-1">${p.nombre}</h3>
                         <p class="text-blue-600 font-black text-sm">RD$ ${p.precio.toLocaleString()}</p>
-                        <button onclick="abrirPedido('${p.nombre}', ${p.precio})" class="w-full mt-3 bg-slate-900 text-white p-3 rounded-xl text-[9px] font-black uppercase tracking-widest"><i class="fa-solid fa-cart-shopping mr-1"></i> Comprar</button>
+                        <button onclick="abrirPedido('${p.nombre}', ${p.precio})" class="w-full mt-3 bg-slate-900 text-white p-3 rounded-xl text-[9px] font-black uppercase"><i class="fa-solid fa-cart-shopping"></i> Comprar</button>
                     </div>
                 </div>`;
             });
@@ -201,18 +196,17 @@
             }
         };
 
-        // --- ADMIN SAVE ---
+        // --- ACCIÓN ADMIN ---
         document.getElementById('btn-save').addEventListener('click', async () => {
             const n = document.getElementById('adm-n').value;
             const p = parseFloat(document.getElementById('adm-p').value);
             const i = document.getElementById('adm-i').value;
             if(n && p && i) {
                 await addDoc(collection(db, "productos"), { nombre: n, precio: p, img: i, creado: serverTimestamp() });
-                alert("Publicado!"); cerrarModales();
+                alert("¡Equipo publicado con éxito!"); cerrarModales();
             }
         });
 
-        // --- PEDIDO ---
         window.abrirPedido = (n, p) => {
             document.getElementById('p-equipo').innerText = n;
             document.getElementById('p-total').innerText = "RD$ " + p.toLocaleString();
@@ -225,12 +219,12 @@
             const pag = document.getElementById('f-pago').value;
             const equ = document.getElementById('p-equipo').innerText;
             const tot = document.getElementById('p-total').innerText;
-            if(!nom || !cor || !pag) return alert("Llena los campos");
+            if(!nom || !cor || !pag) return alert("Llena los datos por favor.");
 
             emailjs.send('Avd121094', 'template_v0ay44c', {
                 from_name: nom, user_email: cor, product: equ, costo_total: tot, method: pag
             }).then(() => {
-                window.open(`https://wa.me/18098182320?text=📦 *NUEVA ORDEN*%0A👤 ${nom}%0A📱 ${equ}%0A💰 ${tot}`);
+                window.open(`https://wa.me/18098182320?text=📦 *NUEVA ORDEN*%0A👤 ${nom}%0A📱 ${equ}%0A💰 ${tot}%0A💳 ${pag}`);
                 cerrarModales();
             });
         };
