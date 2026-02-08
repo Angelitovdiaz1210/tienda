@@ -28,7 +28,6 @@
 
         .app-shell { max-width: 500px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
         
-        /* MODALES */
         #modal-recibo, #panel-admin { display: none; position: fixed; inset: 0; z-index: 999; align-items: center; justify-content: center; padding: 20px; }
         #modal-recibo { background: rgba(15, 23, 42, 0.95); }
         #panel-admin { background: white; flex-direction: column; overflow-y: auto; }
@@ -65,8 +64,8 @@
 
             <div class="mx-5 p-5 bg-white border-2 border-amber-400 rounded-[2rem] text-center shadow-md mb-6">
                 <h3 class="text-amber-600 font-black text-[10px] uppercase mb-1 tracking-widest">⚠️ POLÍTICA DE PEDIDOS</h3>
-                <p class="text-xs text-slate-700 font-bold">Equipos por pedido: 70% al solicitar y 30% restante contra entrega.</p>
-                <p class="text-[10px] text-blue-600 font-black mt-2 underline italic">Entrega garantizada el mismo día.</p>
+                <p class="text-xs text-slate-700 font-bold">70% al solicitar y 30% restante contra entrega.</p>
+                <p class="text-[10px] text-blue-600 font-black mt-2 uppercase italic tracking-tighter">Proceso de entrega seguro y verificado.</p>
             </div>
 
             <div id="lista-productos" class="grid grid-cols-1 gap-6 px-5"></div>
@@ -74,12 +73,8 @@
 
         <footer class="bg-slate-900 text-white p-10 rounded-t-[3rem] text-center mt-auto shadow-2xl">
             <h2 class="text-2xl font-black italic text-blue-500 mb-4 tracking-tighter">VibePhones RD</h2>
-            <p class="text-[11px] text-slate-400 leading-relaxed italic mb-8 px-4">
-                "Distribución premium de tecnología móvil en República Dominicana. Transparencia y seguridad en cada pedido."
-            </p>
             <div class="space-y-3 text-xs font-bold border-t border-white/10 pt-8 text-slate-300">
-                <p><i class="fa-solid fa-phone mr-2"></i> 809-818-2320</p>
-                <p><i class="fa-solid fa-location-dot mr-2"></i> Santo Domingo, RD</p>
+                <p>📞 809-818-2320 | Santo Domingo, RD</p>
             </div>
         </footer>
     </div>
@@ -90,19 +85,14 @@
                 <h2 class="font-black uppercase italic">Admin Panel</h2>
                 <button onclick="cerrarAdmin()" class="text-red-500 font-bold uppercase text-xs">Cerrar</button>
             </div>
-            
             <div class="overflow-y-auto space-y-4">
                 <div class="bg-slate-50 p-4 rounded-3xl space-y-3">
                     <input type="text" id="ad-nombre" placeholder="Nombre del Equipo" class="w-full p-3 rounded-xl border text-sm outline-none">
-                    <input type="text" id="ad-precio" placeholder="Precio (Ej: 45,000)" class="w-full p-3 rounded-xl border text-sm outline-none">
-                    <textarea id="ad-detalles" placeholder="Detalles Técnicos (Batería, Color, GB...)" class="w-full p-3 rounded-xl border text-sm outline-none h-20"></textarea>
-                    
-                    <div class="bg-white p-3 rounded-xl border border-dashed border-slate-300">
-                        <p class="text-[9px] font-black text-slate-400 mb-2 uppercase">Opción 1: Subir Archivo</p>
-                        <input type="file" id="ad-file" class="text-[10px]">
-                        <p class="text-center font-bold text-slate-300 my-1 text-[9px]">O TAMBIÉN</p>
-                        <p class="text-[9px] font-black text-slate-400 mb-1 uppercase">Opción 2: Pegar Enlace URL</p>
-                        <input type="text" id="ad-url" placeholder="https://..." class="w-full p-2 border rounded-lg text-[10px] outline-none">
+                    <input type="text" id="ad-precio" placeholder="Precio" class="w-full p-3 rounded-xl border text-sm outline-none">
+                    <textarea id="ad-detalles" placeholder="Detalles Técnicos" class="w-full p-3 rounded-xl border text-sm outline-none h-20"></textarea>
+                    <div class="bg-white p-3 rounded-xl border border-dashed border-slate-300 text-center">
+                        <input type="file" id="ad-file" class="text-[10px] mb-2">
+                        <input type="text" id="ad-url" placeholder="Ó pega URL de imagen aquí" class="w-full p-2 border rounded-lg text-[10px] outline-none">
                     </div>
                     <button onclick="subirProducto()" id="btn-subir" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black uppercase text-xs">Publicar</button>
                 </div>
@@ -129,43 +119,27 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, orderBy, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        
         const firebaseConfig = { apiKey: "AIzaSyCdn4m4n3Aezuttg8E31DmipXLz0dBueU", projectId: "tiendacelularesrd-f0795", appId: "1:264926688681:web:4d2c5aa50ea2bce0e100b8" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // 5 clics logo para Admin
         let clics = 0;
-        document.getElementById('logo-vibe').onclick = () => {
-            clics++;
-            if(clics === 5) {
-                if(prompt("Clave:") === "Avd121094") document.getElementById('panel-admin').style.display = 'flex';
-                clics = 0;
-            }
-            setTimeout(() => clics = 0, 2500);
-        };
+        document.getElementById('logo-vibe').onclick = () => { clics++; if(clics === 5) { if(prompt("Clave:") === "Avd121094") document.getElementById('panel-admin').style.display = 'flex'; clics = 0; } setTimeout(()=>clics=0, 2500); };
         window.cerrarAdmin = () => document.getElementById('panel-admin').style.display = 'none';
 
-        // Gestión de Productos
         window.subirProducto = async () => {
             const n = document.getElementById('ad-nombre').value, p = document.getElementById('ad-precio').value, d = document.getElementById('ad-detalles').value, 
                   file = document.getElementById('ad-file').files[0], urlImg = document.getElementById('ad-url').value;
-            if(!n || !p) return alert("Nombre y Precio son requeridos");
-            
-            const btn = document.getElementById('btn-subir');
-            btn.innerText = "Subiendo..."; btn.disabled = true;
-
+            if(!n || !p) return alert("Faltan datos");
+            const btn = document.getElementById('btn-subir'); btn.innerText = "Subiendo..."; btn.disabled = true;
             let finalImg = urlImg;
             if(file) {
                 const fd = new FormData(); fd.append("image", file);
                 const res = await fetch("https://api.imgbb.com/1/upload?key=6d302d99d3d3a1f1d9a2a904d9b7577e", { method: "POST", body: fd });
-                const json = await res.json();
-                finalImg = json.data.url;
+                const json = await res.json(); finalImg = json.data.url;
             }
-            if(!finalImg) { alert("Sube una foto o pega una URL"); btn.innerText="Publicar"; btn.disabled=false; return; }
-
+            if(!finalImg) { alert("Sube una foto o URL"); btn.innerText="Publicar"; btn.disabled=false; return; }
             await addDoc(collection(db, "productos"), { n, p, d, img: finalImg, creado: Date.now() });
-            alert("Publicado con éxito");
             location.reload();
         };
 
@@ -176,7 +150,7 @@
             snap.forEach(s => {
                 const data = s.data();
                 grid.innerHTML += `
-                    <div class="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-slate-100">
+                    <div class="bg-white rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 mb-2">
                         <img src="${data.img}" class="w-full h-72 object-contain bg-white p-4">
                         <div class="p-6">
                             <h3 class="text-xl font-black text-slate-800 uppercase mb-1">${data.n}</h3>
@@ -186,16 +160,16 @@
                         </div>
                     </div>`;
                 listaBorrar.innerHTML += `
-                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border">
+                    <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border mb-1">
                         <span class="text-[10px] font-bold truncate w-32">${data.n}</span>
                         <button onclick="borrarProd('${s.id}')" class="text-red-500 font-black text-[10px] uppercase">Borrar</button>
                     </div>`;
             });
         });
 
-        window.borrarProd = async (id) => { if(confirm("¿Eliminar equipo?")) await deleteDoc(doc(db, "productos", id)); };
+        window.borrarProd = async (id) => { if(confirm("¿Borrar?")) await deleteDoc(doc(db, "productos", id)); };
         window.abrirFactura = (n, p) => {
-            const nombre = prompt("¿A nombre de quién?");
+            const nombre = prompt("¿Nombre?");
             if(nombre) {
                 document.getElementById('fac-nombre').innerText = nombre; document.getElementById('fac-equipo').innerText = n;
                 document.getElementById('fac-total').innerText = "RD$ " + p; document.getElementById('modal-recibo').style.display = 'flex';
@@ -207,5 +181,5 @@
         };
     </script>
 </body>
-                            </html>
+    </html>
     
