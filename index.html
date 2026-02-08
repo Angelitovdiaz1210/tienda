@@ -11,7 +11,7 @@
     <style>
         body { background-color: #f8fafc; position: relative; min-height: 100vh; }
         
-        /* LOGO DE FONDO ESTÁTICO - SE ADAPTA A CUALQUIER PANTALLA */
+        /* LOGO DE FONDO ESTÁTICO */
         .bg-logo-static {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 70%; max-width: 300px; opacity: 0.04; z-index: -1; pointer-events: none;
@@ -21,11 +21,15 @@
         .img-container { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; padding: 10px; background: #fff; }
         .product-img { max-width: 100%; max-height: 100%; object-fit: contain; }
         
-        /* MODALES */
         .modal-box { display: none; position: fixed; inset: 0; z-index: 9999; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.85); backdrop-blur: 10px; }
         
-        /* ACCESO INVISIBLE - No parece botón, no da feedback visual */
-        #secret-trigger { -webkit-tap-highlight-color: transparent; outline: none; cursor: default; user-select: none; }
+        /* SOLUCIÓN AL VIDEO: Evita que el celular seleccione texto o haga zoom al tocar */
+        #secret-trigger { 
+            -webkit-tap-highlight-color: transparent; 
+            user-select: none; 
+            touch-action: manipulation;
+            cursor: default;
+        }
     </style>
 </head>
 <body class="antialiased text-slate-900">
@@ -39,15 +43,15 @@
 
     <div class="max-w-[450px] mx-auto min-h-screen flex flex-col bg-white/80 shadow-xl relative z-10">
         
-        <header class="bg-white p-5 sticky top-0 z-[1000] flex justify-between items-center border-b border-slate-100 shadow-sm">
+        <header id="secret-trigger" onclick="contarPasos()" class="bg-white p-5 sticky top-0 z-[1000] flex justify-between items-center border-b border-slate-100 shadow-sm">
             <div class="flex items-center gap-2">
-                <div id="secret-trigger" onclick="contarPasos()" class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-2xl">V</div>
+                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-2xl">V</div>
                 <div>
                     <h1 class="text-sm font-black uppercase tracking-tighter leading-none">VibePhones RD</h1>
                     <p class="text-[8px] font-bold text-blue-600 uppercase tracking-widest">Premium Store</p>
                 </div>
             </div>
-            <a href="https://wa.me/18098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://wa.me/18098182320" onclick="event.stopPropagation()" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
         </header>
 
         <section class="p-4">
@@ -65,7 +69,7 @@
                     <div class="flex items-center gap-4"><i class="fa-solid fa-shield-virus text-blue-400"></i><p class="text-[10px] uppercase font-bold tracking-widest">Garantía Certificada</p></div>
                     <div class="flex items-center gap-4"><i class="fa-solid fa-truck-ramp-box text-blue-400"></i><p class="text-[10px] uppercase font-bold tracking-widest">Envíos a Domicilio</p></div>
                 </div>
-                <p class="opacity-30 text-[9px] uppercase font-black border-t border-white/5 pt-6">© 2026 VibePhones RD | Santo Domingo</p>
+                <p class="opacity-30 text-[9px] uppercase font-black border-t border-white/5 pt-6">© 2026 VibePhones RD</p>
             </div>
         </footer>
     </div>
@@ -74,29 +78,29 @@
         <div class="bg-white w-full max-w-[360px] rounded-[2.5rem] p-8 shadow-2xl border-[5px] border-black">
             <h2 class="font-black uppercase text-center mb-6 text-xl tracking-tighter italic">Gestión de Inventario</h2>
             <div class="space-y-4">
-                <input type="text" id="adm-n" placeholder="Nombre (Ej: iPhone 15 Pro Max)" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none focus:border-blue-500">
-                <input type="number" id="adm-p" placeholder="Precio RD$ (Ej: 55000)" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none focus:border-blue-500">
-                <input type="text" id="adm-d" placeholder="Detalles (Ej: 256GB / Batería 100%)" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none focus:border-blue-500">
-                <input type="text" id="adm-i" placeholder="URL de la imagen del celular" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none focus:border-blue-500">
+                <input type="text" id="adm-n" placeholder="Nombre (Ej: iPhone 15 Pro Max)" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none">
+                <input type="number" id="adm-p" placeholder="Precio RD$" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none">
+                <input type="text" id="adm-d" placeholder="Detalles (Capacidad/Estado)" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none">
+                <input type="text" id="adm-i" placeholder="URL de la imagen" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none">
                 
                 <button id="btn-save" class="w-full bg-black text-white p-5 rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg active:scale-95 transition-transform">
-                    Subir Mercancía
+                    Publicar Equipo
                 </button>
-                <button onclick="cerrarModales()" class="w-full text-red-500 font-black text-[10px] uppercase mt-4 tracking-widest">Cerrar Panel</button>
+                <button onclick="cerrarModales()" class="w-full text-red-500 font-black text-[10px] uppercase mt-4">Cerrar</button>
             </div>
         </div>
     </div>
 
     <div id="modal-pedido" class="modal-box">
-        <div class="bg-white w-full max-w-[350px] rounded-[2.5rem] p-8 shadow-2xl">
-            <h3 class="text-center font-black uppercase text-sm mb-6 tracking-widest">Confirmar Compra</h3>
+        <div class="bg-white w-full max-w-[350px] rounded-[2.5rem] p-8">
+            <h3 class="text-center font-black uppercase text-sm mb-6">Confirmar Compra</h3>
             <div class="space-y-3">
-                <input type="text" id="f-nombre" placeholder="Nombre completo" class="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold text-sm shadow-inner">
+                <input type="text" id="f-nombre" placeholder="Tu nombre" class="w-full p-4 bg-slate-50 border-none rounded-2xl font-bold shadow-inner text-sm">
                 <div class="bg-slate-900 text-white p-6 rounded-[2rem] text-center my-4">
                     <p id="p-equipo" class="text-[9px] uppercase opacity-50 font-black"></p>
                     <p id="p-total" class="text-3xl font-black text-blue-400 tracking-tighter"></p>
                 </div>
-                <button onclick="confirmarCompra()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black text-xs uppercase shadow-xl active:scale-95">Pedir por WhatsApp</button>
+                <button onclick="confirmarCompra()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black text-xs uppercase shadow-xl">Pedir por WhatsApp</button>
                 <button onclick="cerrarModales()" class="w-full text-slate-400 font-bold text-[10px] uppercase mt-4 block text-center">Cancelar</button>
             </div>
         </div>
@@ -106,64 +110,53 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CONEXIÓN A TU BASE DE DATOS (No borrar ni cambiar si ya está configurado)
-        const firebaseConfig = { /* COLOCA TUS CREDENCIALES AQUÍ */ };
+        const firebaseConfig = { /* PON TUS CREDENCIALES AQUÍ */ };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // LÓGICA DE ACCESO SECRETO (5 clics al logo negro 'V')
+        // LÓGICA DE ACCESO MEJORADA PARA EVITAR EL ERROR DEL VIDEO
         let clics = 0;
         window.contarPasos = () => {
             clics++;
             if (clics === 5) {
+                if (window.navigator.vibrate) window.navigator.vibrate(50); // Pequeña vibración de éxito
                 const pass = prompt("INTRODUCE LA CLAVE MAESTRA:");
                 if (pass === "Avd101294") {
                     document.getElementById('modal-admin').style.display = 'flex';
                 }
-                clics = 0; // Se reinicia siempre al llegar a 5
+                clics = 0;
             }
         };
 
-        // CARGAR EQUIPOS DESDE FIREBASE
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const list = document.getElementById('lista-productos');
             list.innerHTML = "";
             snap.forEach(doc => {
                 const p = doc.data();
                 list.innerHTML += `
-                <div class="product-card shadow-sm hover:shadow-md transition-shadow">
-                    <div class="img-container"><img src="${p.img}" class="product-img" onerror="this.src='https://via.placeholder.com/200?text=VibePhones'"></div>
+                <div class="product-card shadow-sm">
+                    <div class="img-container"><img src="${p.img}" class="product-img" onerror="this.src='https://via.placeholder.com/200?text=Phone'"></div>
                     <div class="p-3 border-t text-center">
                         <h3 class="text-[9px] font-black uppercase text-slate-400 line-clamp-1">${p.nombre}</h3>
-                        <p class="text-[8px] font-bold text-slate-500 mb-1 italic">${p.detalles || ''}</p>
-                        <p class="text-blue-600 font-black text-xs mb-3 tracking-tighter">RD$ ${p.precio.toLocaleString()}</p>
+                        <p class="text-[8px] font-bold text-slate-500 mb-1">${p.detalles || ''}</p>
+                        <p class="text-blue-600 font-black text-xs mb-3">RD$ ${p.precio.toLocaleString()}</p>
                         <button onclick="abrirPedido('${p.nombre}', ${p.precio})" class="w-full bg-black text-white p-2 rounded-lg text-[8px] font-black uppercase tracking-tighter">Comprar</button>
                     </div>
                 </div>`;
             });
         });
 
-        // SUBIR NUEVA MERCANCÍA
         document.getElementById('btn-save').addEventListener('click', async () => {
             const n = document.getElementById('adm-n').value;
             const p = parseFloat(document.getElementById('adm-p').value);
             const d = document.getElementById('adm-d').value;
             const i = document.getElementById('adm-i').value;
-
             if(n && p && i) {
-                await addDoc(collection(db, "productos"), {
-                    nombre: n, precio: p, detalles: d, img: i, creado: serverTimestamp()
-                });
-                alert("¡Publicado en la tienda! ✅");
-                document.getElementById('adm-n').value = ""; document.getElementById('adm-p').value = "";
-                document.getElementById('adm-d').value = ""; document.getElementById('adm-i').value = "";
-                cerrarModales();
-            } else {
-                alert("Faltan datos obligatorios.");
+                await addDoc(collection(db, "productos"), { nombre: n, precio: p, detalles: d, img: i, creado: serverTimestamp() });
+                alert("Publicado con éxito"); cerrarModales();
             }
         });
 
-        // FUNCIONES DE COMPRA
         window.abrirPedido = (n, p) => {
             document.getElementById('p-equipo').innerText = n;
             document.getElementById('p-total').innerText = "RD$ " + p.toLocaleString();
@@ -174,15 +167,16 @@
             const nom = document.getElementById('f-nombre').value;
             const equ = document.getElementById('p-equipo').innerText;
             const tot = document.getElementById('p-total').innerText;
-            if(!nom) return alert("Por favor, introduce tu nombre.");
-            window.open(`https://wa.me/18098182320?text=📦 *NUEVA ORDEN VIBEPHONES*%0A👤 *Cliente:* ${nom}%0A📱 *Equipo:* ${equ}%0A💰 *Total:* ${tot}`);
+            if(!nom) return alert("Escribe tu nombre");
+            window.open(`https://wa.me/18098182320?text=📦 *ORDEN:* ${equ}%0A👤 *Cliente:* ${nom}%0A💰 *Total:* ${tot}`);
             cerrarModales();
         };
 
         window.cerrarModales = () => {
             document.querySelectorAll('.modal-box').forEach(m => m.style.display = 'none');
-            clics = 0; // Reinicia el contador de clics al cerrar
+            clics = 0;
         };
     </script>
 </body>
-</html>
+                    </html>
+                    
