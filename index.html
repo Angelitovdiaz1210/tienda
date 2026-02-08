@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>VibePhones RD | Store</title>
+    <title>VibePhones RD | Tienda Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    
+
     <style>
+        /* Estructura de tu Carrusel (Líneas 35-50 de tu GitHub) */
         .bg-carousel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; overflow: hidden; }
-        .carousel-track { display: flex; width: 500%; height: 100%; animation: slideBG 25s infinite ease-in-out; }
+        .carousel-track { display: flex; width: 500%; height: 100%; animation: slidebg 25s infinite ease-in-out; }
         .slide { width: 20%; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
-        @keyframes slideBG {
+        @keyframes slidebg {
             0%, 15% { transform: translateX(0); }
             20%, 35% { transform: translateX(-20%); }
             40%, 55% { transform: translateX(-40%); }
@@ -21,141 +22,134 @@
             80%, 95% { transform: translateX(-80%); }
             100% { transform: translateX(0); }
         }
-        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: rgba(248, 250, 252, 0.94); }
-        .watermark {
-            position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='7' font-weight='900' text-anchor='middle' transform='rotate(-40, 50, 50)'%3EVIBEPHONES RD%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
-        }
-        .app-shell { max-width: 450px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
-        .product-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
-        .product-img { width: 100%; height: 135px; object-fit: contain; padding: 12px; background: #fff; }
-        #modal-recibo { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 15px; background: rgba(15, 23, 42, 0.96); }
-        .modal-box { background: white; width: 100%; max-width: 380px; border-radius: 25px; padding: 20px; }
+        .bg-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: rgba(248, 250, 252, 0.54); }
+        .product-card { background: white; border-radius: 18px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
+        #modal-recibo { display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; padding: 15px; background: rgba(15, 23, 42, 0.80); }
     </style>
 </head>
 <body class="antialiased">
 
     <div class="bg-carousel">
         <div class="carousel-track">
-            <div class="slide"><img src="https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800"></div>
-            <div class="slide"><img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=800"></div>
-            <div class="slide"><img src="https://images.unsplash.com/photo-1510557880182-3d4d3cba3f21?w=800"></div>
-            <div class="slide"><img src="https://images.unsplash.com/photo-1567581935884-3349723552ca?w=800"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1610945895017-f13b5a10bb7a?w=800"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1593327135000-5e89331e1e97?w=800"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1510557883182-3d4d3cbe3f17?w=800"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1587501935894-3343723552ca?w=800"></div>
             <div class="slide"><img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800"></div>
         </div>
     </div>
     <div class="bg-overlay"></div>
-    <div class="watermark"></div>
 
-    <div class="app-shell">
-        <header class="bg-white/90 backdrop-blur-md p-4 sticky top-0 z-[100] border-b flex justify-between items-center">
-            <div id="logo-vibe" class="flex items-center gap-2 cursor-pointer select-none">
+    <div id="app-shell" class="max-w-[450px] mx-auto min-h-screen flex flex-col">
+        <header class="bg-white/80 backdrop-blur-md p-4 sticky top-0 z-[50] border-b flex justify-between items-center">
+            <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-black text-lg">V</div>
                 <h1 class="text-base font-black tracking-tighter uppercase">VibePhones RD</h1>
             </div>
             <a href="https://wa.me/18098182320" class="text-green-500 text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
         </header>
 
-        <main class="p-3">
-            <div id="lista-productos" class="grid grid-cols-2 gap-3"></div>
+        <main class="p-2">
+            <div id="lista-productos" class="grid grid-cols-2 gap-3">
+                </div>
         </main>
 
-        <footer class="bg-slate-900 text-white p-5 rounded-t-[2rem] mt-auto">
-            <p class="text-[9px] text-center font-bold text-slate-400 uppercase tracking-widest">© 2024 VibePhones RD - +1 809-818-2320</p>
+        <footer class="bg-slate-900 text-white p-6 rounded-t-[2rem] mt-auto text-center">
+            <p class="text-[10px] font-bold uppercase tracking-widest opacity-60">© 2024 VibePhones RD</p>
         </footer>
     </div>
 
     <div id="modal-recibo">
-        <div class="modal-box shadow-2xl">
-            <h2 class="text-xs font-black uppercase text-slate-400 mb-4 border-b pb-2 text-center">Datos de Facturación</h2>
+        <div class="bg-white w-full max-w-[380px] rounded-[2rem] p-6 shadow-2xl">
+            <h2 class="text-xs font-black uppercase text-slate-400 mb-4 border-b pb-2">Finalizar Pedido</h2>
+            
             <div class="space-y-3">
                 <input type="text" id="form-nombre" placeholder="Nombre completo" class="w-full p-3 border rounded-xl bg-slate-50 text-sm font-bold">
                 <input type="email" id="form-email" placeholder="Tu Correo Electrónico" class="w-full p-3 border rounded-xl bg-slate-50 text-sm font-bold">
+                
                 <select id="form-pago" class="w-full p-3 border rounded-xl bg-slate-50 text-sm font-bold">
                     <option value="" disabled selected>Método de Pago</option>
-                    <option value="Transferencia">Transferencia</option>
+                    <option value="Transferencia">Transferencia Bancaria</option>
                     <option value="Efectivo">Efectivo</option>
                 </select>
+
                 <select id="form-entrega" class="w-full p-3 border rounded-xl bg-slate-50 text-sm font-bold">
                     <option value="" disabled selected>Tipo de Entrega</option>
-                    <option value="Envío">Envío a Domicilio</option>
-                    <option value="Retiro">Retiro Personal</option>
+                    <option value="Envio">Envío a Domicilio</option>
+                    <option value="Retiro">Retiro en Persona</option>
                 </select>
-                <div class="bg-blue-50 p-3 rounded-xl text-center">
-                    <p id="fac-equipo" class="text-[9px] font-black text-slate-400 uppercase"></p>
-                    <p id="fac-total" class="text-lg font-black text-blue-600"></p>
+
+                <div class="bg-blue-50 p-4 rounded-xl text-center border-2 border-blue-100">
+                    <p id="fac-equipo" class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Cargando...</p>
+                    <p id="fac-total" class="text-xl font-black text-blue-600">RD$ 0</p>
                 </div>
-                <button onclick="procesarPedido()" id="btn-finalizar" class="w-full bg-[#25D366] py-4 rounded-xl text-white font-black text-xs uppercase">
-                    Finalizar y Recibir Recibo
+
+                <button onclick="procesarPedido()" class="w-full bg-slate-900 text-white p-4 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all">
+                    Confirmar y Recibir Recibo
                 </button>
+                <button onclick="document.getElementById('modal-recibo').style.display='none'" class="w-full text-slate-400 text-[10px] font-bold uppercase">Cancelar</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        
-        const firebaseConfig = { apiKey: "AIzaSyCdn4m4n3Aezuttg8E31DmipXLz0dBueU", projectId: "tiendacelularesrd-f0795", appId: "1:264926688681:web:4d2c5aa50ea2bce0e100b8" };
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase e EmailJS Config
+        const firebaseConfig = { /* Tu config aquí */ };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        emailjs.init("YFdmH2dv7ubtkjzod");
 
-        // CONFIGURACIÓN PRIVADA
-        const CUENTA_INTERNA = "--- ESPERANDO TU CUENTA ---";
-
-        // Inicializar EmailJS (Debes crearte una cuenta gratuita en emailjs.com)
-        emailjs.init("TU_USER_ID_DE_EMAILJS");
-
+        // Carga de productos (Respetando tu diseño de tarjetas)
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
             const grid = document.getElementById('lista-productos');
             grid.innerHTML = "";
-            snap.forEach(s => {
-                const data = s.data();
+            snap.forEach((doc) => {
+                const p = doc.data();
                 grid.innerHTML += `
-                    <div class="product-card flex flex-col">
-                        <img src="${data.img}" class="product-img">
-                        <div class="p-3 pt-0 flex flex-col flex-grow">
-                            <h3 class="text-[9px] font-black uppercase truncate">${data.n}</h3>
-                            <p class="text-blue-600 font-black text-[11px] italic">RD$ ${data.p}</p>
-                            <button onclick="abrirForm('${data.n}', '${data.p}')" class="mt-auto w-full bg-slate-900 text-white py-2 rounded-lg text-[8px] font-black uppercase">Pedir</button>
+                    <div class="product-card">
+                        <img src="${p.img}" class="w-full h-[140px] object-contain p-2">
+                        <div class="p-3">
+                            <h2 class="font-black text-[11px] uppercase truncate">${p.nombre}</h2>
+                            <p class="text-blue-600 font-black text-xs mb-2">RD$ ${p.precio.toLocaleString()}</p>
+                            <button onclick="abrirForm('${p.nombre}', '${p.precio}')" class="w-full bg-slate-900 text-white text-[10px] font-black uppercase p-2 rounded-lg">Comprar</button>
                         </div>
                     </div>`;
             });
         });
 
-        window.abrirForm = (n, p) => {
-            document.getElementById('fac-equipo').innerText = n;
-            document.getElementById('fac-total').innerText = "RD$ " + p;
-            document.getElementById('modal-recibo').style.display = 'flex';
+        window.abrirForm = (eq, pr) => {
+            document.getElementById('fac-equipo').innerText = eq;
+            document.getElementById('fac-total').innerText = "RD$ " + pr;
+            document.getElementById('modal-recibo').style.display = "flex";
         };
 
+        // FUNCIÓN FINAL UNIFICADA (Enviando a tu WhatsApp 809-818-2320)
         window.procesarPedido = () => {
             const nom = document.getElementById('form-nombre').value;
-            const em = document.getElementById('form-email').value;
+            const cor = document.getElementById('form-email').value;
             const pag = document.getElementById('form-pago').value;
             const ent = document.getElementById('form-entrega').value;
             const equ = document.getElementById('fac-equipo').innerText;
             const tot = document.getElementById('fac-total').innerText;
+            const idO = Math.floor(Math.random() * 90000) + 10000;
 
-            if(!nom || !em || !pag || !ent) return alert("Completa todos los campos");
+            if(!nom || !cor || !pag || !ent) return alert("⚠️ Completa todos los datos");
 
-            // 1. Enviar Correo (Estructura interna)
-            const templateParams = {
-                to_name: "VibePhones RD",
-                from_name: nom,
-                message: `Pedido de: ${equ} - Total: ${tot} - Pago: ${pag} - Entrega: ${ent}`,
-                reply_to: em
-            };
-
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
-                .then(() => console.log("Correo enviado"))
-                .catch(err => console.log("Error correo", err));
-
-            // 2. Enviar WhatsApp
-            const msg = `📦 *VIBEPHONES RD - RECIBO DIGITAL*%0A%0A👤 *Cliente:* ${nom}%0A📱 *Equipo:* ${equ}%0A💰 *Total:* ${tot}%0A💳 *Metodo:* ${pag}%0A🚚 *Entrega:* ${ent}%0A%0A📌 *Cuenta para depósito:*%0A${CUENTA_INTERNA}`;
-            
-            window.open(`https://wa.me/18098182320?text=${msg}`);
+            // Envío por EmailJS (Service: Avd121094, Template: template_v0ay44c)
+            emailjs.send('Avd121094', 'template_v0ay44c', {
+                nombre: nom, email: cor, product: equ, costo_total: tot, method: pag, delivery: ent, order_id: idO
+            }).then(() => {
+                alert("✅ ¡Recibo enviado a tu correo!");
+                
+                // Envío Automático a tu WhatsApp
+                const msgWA = `📦 *NUEVA ORDEN VIBEPHONES RD*%0A%0A👤 *Cliente:* ${nom}%0A📱 *Equipo:* ${equ}%0A💰 *Total:* ${tot}%0A💳 *Pago:* ${pag}%0A🚚 *Entrega:* ${ent}%0A🆔 *Orden:* #${idO}`;
+                window.open(`https://wa.me/18098182320?text=${msgWA}`);
+                
+                document.getElementById('modal-recibo').style.display = "none";
+            });
         };
     </script>
 </body>
