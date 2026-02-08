@@ -9,31 +9,20 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        /* FONDO ESTÁTICO CON LOGO */
-        body { 
-            background-color: #f8fafc; 
-            position: relative;
-            min-height: 100vh;
-        }
+        body { background-color: #f8fafc; position: relative; min-height: 100vh; }
         
         .bg-logo-static {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%; /* Tamaño normal para que se vea bien en cada pantalla */
-            max-width: 300px;
-            opacity: 0.05; /* Suave para que no moleste la vista */
-            z-index: -1;
-            pointer-events: none;
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 70%; max-width: 300px; opacity: 0.04; z-index: -1; pointer-events: none;
         }
 
-        .product-card { background: white; border-radius: 1.5rem; overflow: hidden; border: 1px solid #e2e8f0; transition: transform 0.2s; }
-        .product-card:active { transform: scale(0.98); }
+        .product-card { background: white; border-radius: 1.5rem; overflow: hidden; border: 1px solid #e2e8f0; }
         .img-container { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; padding: 10px; background: #fff; }
         .product-img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .modal-box { display: none; position: fixed; inset: 0; z-index: 9999; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.8); backdrop-blur: 8px; }
-        header { user-select: none; -webkit-tap-highlight-color: transparent; }
+        
+        /* Área de acceso: Sin efectos visuales para que no parezca un botón */
+        #admin-trigger { -webkit-tap-highlight-color: transparent; user-select: none; }
     </style>
 </head>
 <body class="antialiased text-slate-900">
@@ -41,15 +30,15 @@
     <div class="bg-logo-static">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <rect width="100" height="100" rx="20" fill="black"/>
-            <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-weight="900" font-size="60">V</text>
+            <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="60">V</text>
         </svg>
     </div>
 
-    <div class="max-w-[450px] mx-auto min-h-screen flex flex-col bg-white/70 shadow-xl relative z-10">
+    <div class="max-w-[450px] mx-auto min-h-screen flex flex-col bg-white/80 shadow-xl relative z-10">
         
-        <header id="admin-trigger" class="bg-white p-5 sticky top-0 z-[1000] flex justify-between items-center border-b border-slate-100 shadow-sm cursor-pointer">
-            <div class="flex items-center gap-2">
-                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-2xl shadow-md">V</div>
+        <header class="bg-white p-5 sticky top-0 z-[1000] flex justify-between items-center border-b border-slate-100 shadow-sm">
+            <div id="admin-trigger" onclick="contarClics()" class="flex items-center gap-2 cursor-default">
+                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-2xl">V</div>
                 <div>
                     <h1 class="text-sm font-black uppercase tracking-tighter leading-none">VibePhones RD</h1>
                     <p class="text-[8px] font-bold text-blue-600 uppercase tracking-widest">Premium Store</p>
@@ -59,79 +48,60 @@
         </header>
 
         <section class="p-4">
-            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4">
-                <p class="text-[11px] leading-tight text-blue-900 font-bold text-center">
-                    📢 Pedidos: <span class="text-blue-600">70% inicial</span> para pedir y <span class="text-blue-600">30% contra entrega</span>.
-                </p>
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
+                <p class="text-[11px] text-blue-900 font-bold">📢 Pedidos: <span class="text-blue-600">70% inicial</span> y <span class="text-blue-600">30% al recibir</span>.</p>
             </div>
         </section>
 
         <main id="lista-productos" class="p-4 grid grid-cols-2 gap-4 flex-grow"></main>
 
-        <section class="p-6 bg-slate-50/80 border-t border-slate-100">
-            <h2 class="font-black uppercase text-[10px] mb-4 text-center tracking-widest text-slate-400">Opiniones de Clientes</h2>
-            <div id="comentarios-lista" class="space-y-3 mb-4 max-h-[200px] overflow-y-auto pr-1"></div>
+        <section class="p-6 bg-slate-50 border-t">
+            <h2 class="font-black uppercase text-[10px] mb-4 text-center text-slate-400">Opiniones</h2>
+            <div id="comentarios-lista" class="space-y-3 mb-4 max-h-[150px] overflow-y-auto"></div>
             <div class="space-y-2">
-                <input type="text" id="com-nombre" placeholder="Nombre" class="w-full p-3 rounded-xl bg-white border border-slate-200 text-xs font-bold outline-none">
-                <textarea id="com-texto" placeholder="Escribe tu opinión..." class="w-full p-3 rounded-xl bg-white border border-slate-200 text-xs font-bold outline-none h-16"></textarea>
-                <button onclick="subirComentario()" class="w-full bg-black text-white p-3 rounded-xl font-black text-[10px] uppercase tracking-widest">Enviar</button>
+                <input type="text" id="com-nombre" placeholder="Nombre" class="w-full p-3 rounded-xl border text-xs font-bold outline-none">
+                <textarea id="com-texto" placeholder="Opinión" class="w-full p-3 rounded-xl border text-xs font-bold outline-none h-14"></textarea>
+                <button onclick="subirComentario()" class="w-full bg-black text-white p-3 rounded-xl font-black text-[10px] uppercase">Publicar</button>
             </div>
         </section>
 
         <footer class="bg-slate-900 text-white p-10">
             <div class="text-center">
-                <h4 class="text-[10px] font-black uppercase tracking-[0.2em] mb-8 opacity-50 italic">Calidad VibePhones RD</h4>
-                <div class="space-y-5 text-left mb-8">
-                    <div class="flex items-center gap-4">
-                        <i class="fa-solid fa-check-circle text-blue-400"></i>
-                        <p class="text-[10px] uppercase font-bold tracking-tight">Equipos Originales Multimarca</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <i class="fa-solid fa-shield-alt text-blue-400"></i>
-                        <p class="text-[10px] uppercase font-bold tracking-tight">Garantía Técnica Asegurada</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <i class="fa-solid fa-truck text-blue-400"></i>
-                        <p class="text-[10px] uppercase font-bold tracking-tight">Entregas en Santo Domingo</p>
-                    </div>
+                <div class="space-y-4 text-left mb-8">
+                    <div class="flex items-center gap-4"><i class="fa-solid fa-check-circle text-blue-400"></i><p class="text-[10px] uppercase font-bold">Equipos Originales</p></div>
+                    <div class="flex items-center gap-4"><i class="fa-solid fa-shield-alt text-blue-400"></i><p class="text-[10px] uppercase font-bold">Garantía Técnica</p></div>
+                    <div class="flex items-center gap-4"><i class="fa-solid fa-truck text-blue-400"></i><p class="text-[10px] uppercase font-bold">Entregas Seguras</p></div>
                 </div>
-                <div class="opacity-30 text-[9px] uppercase font-black border-t border-white/10 pt-6">
-                    © 2026 VibePhones RD | Store Premium
-                </div>
+                <p class="opacity-30 text-[9px] uppercase font-black border-t border-white/5 pt-6">© 2026 VibePhones RD</p>
             </div>
         </footer>
     </div>
 
     <div id="modal-admin" class="modal-box">
         <div class="bg-white w-full max-w-[350px] rounded-[2rem] p-8 shadow-2xl border-4 border-black">
-            <h2 class="font-black uppercase text-center mb-6 text-lg">Panel Maestro</h2>
+            <h2 class="font-black uppercase text-center mb-6 text-lg">Panel de Inventario</h2>
             <div class="space-y-4">
-                <input type="text" id="adm-n" placeholder="Nombre Equipo" class="w-full p-4 bg-slate-50 border rounded-xl font-bold text-sm">
-                <input type="number" id="adm-p" placeholder="Precio RD$" class="w-full p-4 bg-slate-50 border rounded-xl font-bold text-sm">
-                <input type="text" id="adm-i" placeholder="URL de Imagen" class="w-full p-4 bg-slate-50 border rounded-xl font-bold text-sm">
-                <button id="btn-save" class="w-full bg-black text-white p-4 rounded-xl font-black uppercase text-xs">Publicar Ahora</button>
-                <button onclick="cerrarModales()" class="w-full text-red-500 font-black text-[10px] uppercase mt-4">Salir</button>
+                <input type="text" id="adm-n" placeholder="Nombre y Modelo" class="w-full p-4 bg-slate-50 border rounded-xl font-bold">
+                <input type="number" id="adm-p" placeholder="Precio RD$" class="w-full p-4 bg-slate-50 border rounded-xl font-bold">
+                <input type="text" id="adm-d" placeholder="Detalles (Ej: 256GB, Nuevo)" class="w-full p-4 bg-slate-50 border rounded-xl font-bold">
+                <input type="text" id="adm-i" placeholder="URL de la Foto" class="w-full p-4 bg-slate-50 border rounded-xl font-bold">
+                <button id="btn-save" class="w-full bg-black text-white p-4 rounded-xl font-black uppercase">Publicar Equipo</button>
+                <button onclick="cerrarModales()" class="w-full text-red-500 font-black text-[10px] uppercase mt-4">Cerrar</button>
             </div>
         </div>
     </div>
 
     <div id="modal-pedido" class="modal-box">
-        <div class="bg-white w-full max-w-[350px] rounded-[2rem] p-8 shadow-2xl">
-            <h3 class="text-center font-black uppercase text-sm mb-6">Confirmar Compra</h3>
+        <div class="bg-white w-full max-w-[350px] rounded-[2rem] p-8">
+            <h3 class="text-center font-black uppercase text-sm mb-6">Solicitud de Compra</h3>
             <div class="space-y-3">
-                <input type="text" id="f-nombre" placeholder="Nombre" class="w-full p-4 bg-slate-50 border rounded-xl font-bold text-sm">
-                <input type="email" id="f-email" placeholder="Email" class="w-full p-4 bg-slate-50 border rounded-xl font-bold text-sm">
-                <select id="f-pago" class="w-full p-4 bg-slate-50 border rounded-xl font-bold text-xs">
-                    <option value="" disabled selected>Pago</option>
-                    <option value="Transferencia">Transferencia</option>
-                    <option value="Efectivo">Efectivo</option>
-                </select>
-                <div class="bg-black text-white p-5 rounded-2xl text-center my-2">
-                    <p id="p-equipo" class="text-[9px] uppercase opacity-60 font-black"></p>
+                <input type="text" id="f-nombre" placeholder="Nombre" class="w-full p-4 bg-slate-50 border rounded-xl font-bold">
+                <div class="bg-black text-white p-5 rounded-2xl text-center">
+                    <p id="p-equipo" class="text-[9px] uppercase opacity-60"></p>
                     <p id="p-total" class="text-2xl font-black text-blue-400"></p>
                 </div>
-                <button onclick="confirmarCompra()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-black text-xs uppercase">Generar Pedido</button>
-                <button onclick="cerrarModales()" class="w-full text-slate-400 font-bold text-[10px] uppercase mt-4">Cancelar</button>
+                <button onclick="confirmarCompra()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-black text-xs uppercase">Confirmar</button>
+                <button onclick="cerrarModales()" class="w-full text-slate-400 font-bold text-[10px] uppercase mt-4">Cerrar</button>
             </div>
         </div>
     </div>
@@ -140,29 +110,24 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CONFIGURA TU FIREBASE AQUÍ
-        const firebaseConfig = { /* TU CONFIG */ };
+        const firebaseConfig = { /* COLOCA TUS DATOS DE FIREBASE AQUÍ */ };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        emailjs.init("YFdmH2dv7ubtkjzod");
 
-        // ACCESO ADMIN (5 clics en el header)
-        let taps = 0;
-        let tapTimer;
-        document.getElementById('admin-trigger').addEventListener('click', () => {
-            taps++;
-            clearTimeout(tapTimer);
-            if (taps === 5) {
-                const pass = prompt("🔐 CONTRASEÑA ADMIN:");
+        // LÓGICA DE 5 CLICS SIN LÍMITE DE TIEMPO
+        let contador = 0;
+        window.contarClics = () => {
+            contador++;
+            if (contador === 5) {
+                const pass = prompt("CONTRASEÑA DE ADMINISTRADOR:");
                 if (pass === "Avd101294") {
                     document.getElementById('modal-admin').style.display = 'flex';
                 } else {
                     alert("Clave incorrecta");
                 }
-                taps = 0;
+                contador = 0; // Reiniciar después de intentar
             }
-            tapTimer = setTimeout(() => { taps = 0; }, 3000);
-        });
+        };
 
         // CARGAR PRODUCTOS
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
@@ -172,45 +137,40 @@
                 const p = doc.data();
                 list.innerHTML += `
                 <div class="product-card">
-                    <div class="img-container"><img src="${p.img}" class="product-img" onerror="this.src='https://via.placeholder.com/200?text=Phone'"></div>
-                    <div class="p-3 border-t border-slate-50 text-center">
-                        <h3 class="text-[9px] font-black uppercase text-slate-400 mb-1">${p.nombre}</h3>
-                        <p class="text-blue-600 font-black text-xs mb-3">RD$ ${p.precio.toLocaleString()}</p>
+                    <div class="img-container"><img src="${p.img}" class="product-img"></div>
+                    <div class="p-3 border-t text-center">
+                        <h3 class="text-[9px] font-black uppercase text-slate-400">${p.nombre}</h3>
+                        <p class="text-[8px] font-bold text-slate-500 mb-1">${p.detalles || ''}</p>
+                        <p class="text-blue-600 font-black text-xs mb-2">RD$ ${p.precio.toLocaleString()}</p>
                         <button onclick="abrirPedido('${p.nombre}', ${p.precio})" class="w-full bg-black text-white p-2 rounded-lg text-[8px] font-black uppercase">Comprar</button>
                     </div>
                 </div>`;
             });
         });
 
-        // CARGAR COMENTARIOS
-        onSnapshot(query(collection(db, "comentarios"), orderBy("creado", "desc")), (snap) => {
-            const list = document.getElementById('comentarios-lista');
-            list.innerHTML = "";
-            snap.forEach(doc => {
-                const c = doc.data();
-                list.innerHTML += `<div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
-                    <p class="text-[9px] font-black uppercase">${c.nombre}</p>
-                    <p class="text-[10px] text-slate-600 font-medium">${c.texto}</p>
-                </div>`;
-            });
-        });
-
-        window.subirComentario = async () => {
-            const n = document.getElementById('com-nombre').value;
-            const t = document.getElementById('com-texto').value;
-            if(n && t) {
-                await addDoc(collection(db, "comentarios"), { nombre: n, texto: t, creado: serverTimestamp() });
-                document.getElementById('com-nombre').value = ""; document.getElementById('com-texto').value = "";
-            }
-        };
-
+        // GUARDAR PRODUCTO
         document.getElementById('btn-save').addEventListener('click', async () => {
             const n = document.getElementById('adm-n').value;
             const p = parseFloat(document.getElementById('adm-p').value);
+            const d = document.getElementById('adm-d').value;
             const i = document.getElementById('adm-i').value;
             if(n && p && i) {
-                await addDoc(collection(db, "productos"), { nombre: n, precio: p, img: i, creado: serverTimestamp() });
-                alert("Equipo Publicado ✅"); cerrarModales();
+                await addDoc(collection(db, "productos"), { 
+                    nombre: n, 
+                    precio: p, 
+                    detalles: d, 
+                    img: i, 
+                    creado: serverTimestamp() 
+                });
+                alert("¡Equipo publicado con éxito!"); 
+                cerrarModales();
+                // Limpiar campos
+                document.getElementById('adm-n').value = "";
+                document.getElementById('adm-p').value = "";
+                document.getElementById('adm-d').value = "";
+                document.getElementById('adm-i').value = "";
+            } else {
+                alert("Por favor rellena Nombre, Precio e Imagen");
             }
         });
 
@@ -220,24 +180,8 @@
             document.getElementById('modal-pedido').style.display = 'flex';
         };
 
-        window.confirmarCompra = () => {
-            const nom = document.getElementById('f-nombre').value;
-            const cor = document.getElementById('f-email').value;
-            const pag = document.getElementById('f-pago').value;
-            const equ = document.getElementById('p-equipo').innerText;
-            const tot = document.getElementById('p-total').innerText;
-            if(!nom || !cor || !pag) return alert("Faltan datos");
-
-            emailjs.send('Avd121094', 'template_v0ay44c', {
-                from_name: nom, user_email: cor, product: equ, costo_total: tot, method: pag
-            }).then(() => {
-                window.open(`https://wa.me/18098182320?text=📦 *ORDEN:* ${equ}%0A👤 *Nombre:* ${nom}%0A💰 *Total:* ${tot}`);
-                cerrarModales();
-            });
-        };
-
         window.cerrarModales = () => document.querySelectorAll('.modal-box').forEach(m => m.style.display = 'none');
     </script>
 </body>
-                    </html>
+    </html>
     
