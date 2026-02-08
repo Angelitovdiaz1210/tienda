@@ -3,119 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>VibePhones RD | Tienda Oficial</title>
+    <title>VibePhones RD | Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        body { background: #f1f5f9; font-family: 'Inter', sans-serif; margin: 0; }
-        .app-container { 
-            background: #f8fafc; 
-            width: 100%; 
-            max-width: 500px; 
-            margin: 0 auto;
-            min-height: 100vh; 
-            position: relative; 
-            display: flex; 
-            flex-direction: column;
-            box-shadow: 0 0 40px rgba(0,0,0,0.1);
-        }
-
-        /* MARCA DE AGUA FONDO */
-        .watermark-bg {
-            position: absolute;
+        /* CARRUSEL DE FONDO SUTIL */
+        .bg-carousel {
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='9' fill='rgba(15, 23, 42, 0.05)' font-family='Arial' font-weight='900' text-anchor='middle' transform='rotate(-35, 50, 50)'%3EVIBEPHONES RD%3C/text%3E%3C/svg%3E");
-            background-repeat: repeat;
+            z-index: -3; overflow: hidden;
         }
-
-        header, main, footer { position: relative; z-index: 10; }
-
-        /* CARRUSEL */
-        .carousel-container { width: 100%; height: 200px; overflow: hidden; position: relative; }
-        .carousel-track { display: flex; width: 500%; height: 100%; animation: scroll 20s infinite linear; }
+        .carousel-track {
+            display: flex; width: 500%; height: 100%;
+            animation: slideBG 30s infinite ease-in-out;
+        }
         .slide { width: 20%; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        @keyframes scroll {
-            0%, 20% { transform: translateX(0); }
-            25%, 45% { transform: translateX(-20%); }
-            50%, 70% { transform: translateX(-40%); }
-            75%, 95% { transform: translateX(-60%); }
-            100% { transform: translateX(-80%); }
+        /* CAPA PARA QUE NO OPAQUE EL CONTENIDO (Neblina) */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+            background: rgba(241, 245, 249, 0.85); /* Controla aquí qué tan transparente es el fondo */
         }
 
-        .img-tech { height: 110px; width: 100%; object-fit: contain; padding: 10px; background: #fff; }
-        .card-tech { border-radius: 15px; overflow: hidden; border: 1px solid #e2e8f0; background: white; }
+        /* MARCA DE AGUA MUY SUAVE */
+        .watermark-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='6' fill='rgba(15, 23, 42, 0.04)' font-family='Arial' font-weight='900' text-anchor='middle' transform='rotate(-35, 50, 50)'%3EVIBEPHONES RD%3C/text%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        .app-shell {
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* PRODUCTOS CON FONDO SÓLIDO PARA CLARIDAD */
+        .product-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        @keyframes slideBG {
+            0%, 15% { transform: translateX(0); }
+            20%, 35% { transform: translateX(-20%); }
+            40%, 55% { transform: translateX(-40%); }
+            60%, 75% { transform: translateX(-60%); }
+            80%, 95% { transform: translateX(-80%); }
+            100% { transform: translateX(0); }
+        }
+
+        #modal-recibo {
+            display: none; position: fixed; inset: 0;
+            background: rgba(15, 23, 42, 0.9); z-index: 999;
+            align-items: center; justify-content: center; padding: 20px;
+        }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-    <div class="app-container">
-        <div class="watermark-bg"></div>
+    <div class="bg-carousel">
+        <div class="carousel-track">
+            <div class="slide"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1000" alt="1"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1556656793-062ff987b483?w=1000" alt="2"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=1000" alt="3"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1567581935884-3349723552ca?w=1000" alt="4"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=1000" alt="5"></div>
+        </div>
+    </div>
+    <div class="bg-overlay"></div>
+    <div class="watermark-overlay"></div>
 
-        <header class="bg-white p-4 border-b flex justify-between items-center sticky top-0">
-            <div onclick="accederAdmin()" class="flex items-center gap-2 cursor-pointer">
-                <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-black">V</div>
-                <h1 class="font-bold text-slate-900">VibePhones RD</h1>
+    <div class="app-shell">
+        <header class="bg-white/95 backdrop-blur-sm p-5 sticky top-0 z-[100] border-b flex justify-between items-center shadow-sm">
+            <div onclick="abrirAdmin()" class="flex items-center gap-3 cursor-pointer">
+                <div class="w-10 h-10 bg-slate-900 rounded-2xl flex items-center justify-center text-white font-black text-xl">V</div>
+                <h1 class="text-xl font-black text-slate-900 tracking-tighter uppercase">VibePhones RD</h1>
             </div>
-            <a href="https://wa.me/8098182320" class="text-green-500 text-2xl"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://wa.me/8098182320" class="text-green-500 text-3xl">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
         </header>
 
         <main class="flex-grow">
-            <div class="carousel-container shadow-md">
-                <div class="carousel-track">
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600" alt="1"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600" alt="2"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=600" alt="3"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1567581935884-3349723552ca?w=600" alt="4"></div>
-                    <div class="slide"><img src="https://images.unsplash.com/photo-1556656793-062ff987b483?w=600" alt="5"></div>
-                </div>
+            <div class="p-8 text-center">
+                <h2 class="text-slate-800 text-2xl font-black uppercase tracking-widest">Tienda Oficial</h2>
+                <p class="text-slate-500 font-bold text-xs uppercase tracking-tighter">Calidad Premium Grado A+</p>
             </div>
 
-            <div class="m-3 p-3 bg-amber-50 border border-amber-300 rounded-xl text-center">
-                <p class="text-[10px] font-bold text-amber-800 uppercase italic">⚠️ Aviso de Pedido</p>
-                <p class="text-[11px] font-semibold text-slate-700">70% al solicitar y 30% contra entrega.</p>
+            <div class="mx-5 p-5 bg-white border-2 border-amber-400 rounded-[2rem] text-center shadow-sm">
+                <h3 class="text-amber-600 font-black text-[10px] uppercase mb-1">⚠️ IMPORTANTE</h3>
+                <p class="text-xs text-slate-700 font-bold">Equipos por pedido: 70% al solicitar y 30% contra entrega.</p>
             </div>
 
-            <div id="grid-productos" class="grid grid-cols-2 gap-3 p-3"></div>
+            <div id="lista-productos" class="grid grid-cols-2 gap-4 p-5"></div>
 
-            <div class="p-4">
-                <h3 class="text-[10px] font-black text-slate-800 uppercase mb-2">📍 Nuestra Ubicación</h3>
-                <div class="rounded-2xl overflow-hidden border-2 border-white shadow-lg" style="height: 200px; width: 100%;">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15135.092497645168!2d-69.894229!3d18.483329!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDI5JzAwLjAiTiA2OcKwNTMnMzkuMiJX!5e0!3m2!1ses!2sdo!4v1700000000000" 
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
-                    </iframe>
+            <div class="p-5">
+                <div class="bg-white p-5 rounded-[2.5rem] shadow-sm border border-slate-200">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest text-center">Nuestra Ubicación</h3>
+                    <div class="rounded-[2rem] overflow-hidden h-72 border border-slate-100">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3784.123456789!2d-69.938!3d18.472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTjCsDI4JzE5LjIiTiA2OcKwNTYnMTYuOCJX!5e0!3m2!1ses!2sdo!4v1625500000000!5m2!1ses!2sdo1" 
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </main>
 
-        <footer class="bg-slate-900 text-white p-8 rounded-t-[30px] mt-10">
-            <div class="text-center">
-                <h2 class="text-xl font-black italic tracking-tighter mb-4">VibePhones<span class="text-blue-500">RD</span></h2>
-                <p class="text-[11px] text-slate-400 italic leading-relaxed mb-6">
-                    "En VibePhones RD nos dedicamos a la distribución premium de tecnología móvil en República Dominicana. Nuestra misión es conectar a nuestros clientes con equipos Grado A+ bajo un modelo de gestión transparente y seguro."
-                </p>
-                <div class="flex flex-col gap-2 text-[10px] font-bold text-slate-300 border-t border-slate-800 pt-6">
-                    <p><i class="fa-solid fa-phone mr-2"></i> 809-818-2320</p>
-                    <p><i class="fa-solid fa-location-dot mr-2"></i> Santo Domingo, República Dominicana</p>
-                </div>
+        <footer class="bg-slate-900 text-white p-10 rounded-t-[3rem] text-center">
+            <h2 class="text-2xl font-black italic text-blue-500 mb-4 tracking-tighter">VibePhones RD</h2>
+            <p class="text-[11px] text-slate-400 leading-relaxed italic mb-8 px-4">
+                "En VibePhones RD nos dedicamos a la distribución premium de tecnología móvil en República Dominicana. Nuestra misión es conectar a nuestros clientes con equipos Grado A+."
+            </p>
+            <div class="space-y-3 text-xs font-bold border-t border-white/10 pt-8 text-slate-300">
+                <p><i class="fa-solid fa-phone mr-2"></i> 809-818-2320</p>
+                <p><i class="fa-solid fa-location-dot mr-2"></i> Santo Domingo, República Dominicana</p>
             </div>
         </footer>
     </div>
 
-    <div id="modal-exito" class="hidden fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-[320px] rounded-3xl p-8 text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-blue-600"></div>
-            <h2 class="text-xs font-black uppercase text-slate-400 mb-6">Recibo de Pedido</h2>
+    <div id="modal-recibo">
+        <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-[350px] text-center shadow-2xl">
+            <h2 class="text-xs font-black uppercase text-slate-400 mb-6 tracking-widest border-b pb-2">Factura de Orden</h2>
             <div class="text-left space-y-4 mb-8">
-                <div><span class="text-[9px] font-bold text-slate-400 uppercase">Cliente:</span><p id="r-nombre" class="text-sm font-bold border-b pb-1"></p></div>
-                <div><span class="text-[9px] font-bold text-slate-400 uppercase">Equipo:</span><p id="r-equipo" class="text-sm font-bold border-b pb-1 text-blue-600"></p></div>
-                <div class="bg-slate-50 p-4 rounded-xl text-center"><span class="text-[9px] font-bold text-slate-400 uppercase">Total:</span><p id="r-total" class="text-2xl font-black"></p></div>
+                <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Cliente</span><p id="fac-nombre" class="text-sm font-black text-slate-900"></p></div>
+                <div><span class="text-[9px] font-bold text-slate-400 block uppercase">Equipo</span><p id="fac-equipo" class="text-sm font-black text-blue-600"></p></div>
+                <div class="bg-slate-50 p-5 rounded-2xl text-center border border-slate-100">
+                    <span class="text-[9px] font-bold text-slate-400 block uppercase">Total</span>
+                    <p id="fac-total" class="text-3xl font-black text-slate-900"></p>
+                </div>
             </div>
-            <button onclick="enviarWhatsApp()" class="w-full bg-[#25D366] py-4 rounded-2xl text-white font-black text-xs uppercase shadow-lg">Enviar a WhatsApp</button>
+            <button onclick="confirmarPedido()" class="w-full bg-[#25D366] py-5 rounded-2xl text-white font-black text-xs uppercase shadow-xl hover:scale-105 transition-transform">
+                <i class="fa-brands fa-whatsapp text-lg mr-2"></i> Confirmar Pedido
+            </button>
         </div>
     </div>
 
@@ -123,45 +156,50 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
-        const firebaseConfig = { apiKey: "AIzaSyCdn4m4n3Aezuttg8E31DmipXLz0dBueU", projectId: "tiendacelularesrd-f0795", appId: "1:264926688681:web:4d2c5aa50ea2bce0e100b8" };
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCdn4m4n3Aezuttg8E31DmipXLz0dBueU", 
+            projectId: "tiendacelularesrd-f0795", 
+            appId: "1:264926688681:web:4d2c5aa50ea2bce0e100b8" 
+        };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
-            const grid = document.getElementById('grid-productos');
+            const grid = document.getElementById('lista-productos');
             grid.innerHTML = "";
             snap.forEach(doc => {
-                const d = doc.data();
+                const p = doc.data();
+                const precio = Number(p.p).toLocaleString();
                 grid.innerHTML += `
-                    <div class="card-tech shadow-sm">
-                        <img src="${d.img}" class="img-tech">
-                        <div class="p-3">
-                            <h3 class="text-[9px] font-bold uppercase truncate">${d.n}</h3>
-                            <p class="text-blue-600 font-black text-xs mb-2">RD$ ${Number(d.p).toLocaleString()}</p>
-                            <button onclick="pedir('${d.n}', '${d.p}')" class="w-full bg-slate-900 text-white py-2 rounded-lg text-[8px] font-black uppercase">Solicitar</button>
+                    <div class="product-card flex flex-col">
+                        <img src="${p.img}" class="w-full h-40 object-contain p-4">
+                        <div class="p-4 pt-0">
+                            <h3 class="text-[9px] font-black uppercase text-slate-800 truncate mb-1">${p.n}</h3>
+                            <p class="text-blue-600 font-black text-sm mb-3">RD$ ${precio}</p>
+                            <button onclick="abrirFactura('${p.n}', '${precio}')" class="w-full bg-slate-900 text-white py-2.5 rounded-xl text-[9px] font-black uppercase tracking-tighter">Pedir</button>
                         </div>
                     </div>`;
             });
         });
 
-        window.pedir = (n, p) => {
-            const nombre = prompt("Tu nombre:");
+        window.abrirFactura = (n, p) => {
+            const nombre = prompt("¿A nombre de quién?");
             if(nombre) {
-                document.getElementById('r-nombre').innerText = nombre;
-                document.getElementById('r-equipo').innerText = n;
-                document.getElementById('r-total').innerText = "RD$ " + Number(p).toLocaleString();
-                document.getElementById('modal-exito').classList.remove('hidden');
+                document.getElementById('fac-nombre').innerText = nombre;
+                document.getElementById('fac-equipo').innerText = n;
+                document.getElementById('fac-total').innerText = "RD$ " + p;
+                document.getElementById('modal-recibo').style.display = 'flex';
             }
         };
 
-        window.enviarWhatsApp = () => {
-            const n = document.getElementById('r-nombre').innerText;
-            const e = document.getElementById('r-equipo').innerText;
-            const t = document.getElementById('r-total').innerText;
-            window.open(`https://wa.me/8098182320?text=Hola VibePhones RD, mi nombre es ${n}, quiero solicitar el equipo: ${e} por un total de ${t}.`);
+        window.confirmarPedido = () => {
+            const n = document.getElementById('fac-nombre').innerText;
+            const e = document.getElementById('fac-equipo').innerText;
+            const t = document.getElementById('fac-total').innerText;
+            window.open(`https://wa.me/8098182320?text=📦 *ORDEN VIBEPHONES*%0A👤 *Cliente:* ${n}%0A📱 *Equipo:* ${e}%0A💰 *Monto:* ${t}`);
         };
 
-        window.accederAdmin = () => { if(prompt("Acceso:") === "Avd121094") alert("Acceso permitido"); };
+        window.abrirAdmin = () => { if(prompt("Acceso:") === "Avd121094") alert("Modo Admin Activado"); };
     </script>
 </body>
 </html>
