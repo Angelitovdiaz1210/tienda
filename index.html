@@ -2,180 +2,275 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>VibePhones RD | Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibePhone RD | Exclusive Store</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        body { background-color: #f8fafc; position: relative; min-height: 100vh; }
+        :root { --vibe-blue: #0071e3; --vibe-bg: #ffffff; --vibe-gradient: linear-gradient(135deg, #0071e3 0%, #5e5ce6 100%); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--vibe-bg); color: #1d1d1f; scroll-behavior: smooth; overflow-x: hidden; }
         
-        /* TU ESTRUCTURA ORIGINAL DE GITHUB */
-        .bg-logo-static {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 70%; max-width: 350px; opacity: 0.04; z-index: -1; pointer-events: none;
+        .nav-glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid #5e5ce6; }
+        
+        .product-grid { 
+            display: grid; grid-template-columns: repeat(1, 1fr); gap: 20px; padding: 20px; max-width: 1400px; margin: 0 auto; 
         }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; padding: 40px 20px; } }
+        @media (min-width: 1100px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
 
-        .product-card { background: white; border-radius: 1.5rem; overflow: hidden; border: 1px solid #e2e8f0; height: 100%; display: flex; flex-direction: column; }
-        .img-container { width: 100%; height: 160px; display: flex; align-items: center; justify-content: center; padding: 10px; background: #fff; }
-        .product-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .vibe-card { 
+            background: #f5f5f7; border-radius: 40px; overflow: hidden; 
+            transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); display: flex; flex-direction: column; text-align: center;
+        }
+        .vibe-card:hover { transform: scale(1.02); background: #fbfbfb; box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
         
-        .modal-box { display: none; position: fixed; inset: 0; z-index: 9999; align-items: center; justify-content: center; padding: 20px; background: rgba(0,0,0,0.85); backdrop-blur: 10px; }
+        .vibe-card img { width: 100%; height: 300px; object-fit: contain; padding: 30px; }
+
+        .btn-buy { 
+            background: var(--vibe-gradient); color: white; padding: 18px 32px; border-radius: 40px; 
+            font-weight: 800; font-size: 16px; margin: 0 40px 40px 40px; transition: 0.3s;
+        }
+        .btn-buy:hover { filter: brightness(1.1); transform: translateY(-3px); }
+
+        .modal-blur { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: white; border-radius: 45px; width: 100%; max-width: 600px; padding: 45px; max-height: 90vh; overflow-y: auto; }
+        
+        .wsp-float {
+            position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white;
+            width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); z-index: 1500; transition: 0.3s;
+        }
     </style>
 </head>
-<body class="antialiased text-slate-900">
+<body>
 
-    <div class="bg-logo-static">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100" height="100" rx="20" fill="black"/>
-            <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" fill="white" font-family="Arial" font-weight="900" font-size="60">V</text>
-        </svg>
-    </div>
+    <a href="https://wa.me/8098182320" target="_blank" class="wsp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
 
-    <div class="max-w-[450px] mx-auto min-h-screen flex flex-col bg-white/80 shadow-xl relative z-10">
-        
-        <header class="bg-white p-5 sticky top-0 z-[1000] flex justify-between items-center border-b border-slate-100 shadow-sm">
-            <div id="admin-trigger" onclick="contarClics()" class="flex items-center gap-2 cursor-pointer select-none">
-                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black text-2xl">V</div>
+    <nav class="nav-glass">
+        <div class="max-w-[1400px] mx-auto px-8 py-5 flex justify-between items-center">
+            <div class="flex items-center gap-4 cursor-pointer" id="logo-trigger">
+                <div class="w-12 h-12 bg-gradient-to-tr from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-lg">V</div>
                 <div>
-                    <h1 class="text-sm font-black uppercase tracking-tighter leading-none">VibePhones RD</h1>
-                    <p class="text-[8px] font-bold text-blue-600 uppercase tracking-widest">Premium Store</p>
+                    <h1 class="text-2xl font-black tracking-tighter leading-none">VibePhone RD</h1>
+                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest leading-none">Premium Store</span>
                 </div>
             </div>
-            <a href="https://wa.me/18098182320" class="text-green-500 text-3xl"><i class="fa-brands fa-whatsapp"></i></a>
-        </header>
-
-        <section class="p-4">
-            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
-                <p class="text-[11px] text-blue-900 font-bold italic">📢 Pedidos: 70% inicial y 30% al recibir.</p>
-            </div>
-        </section>
-
-        <main id="lista-productos" class="p-4 grid grid-cols-2 gap-4 flex-grow"></main>
-
-        <footer class="bg-slate-900 text-white p-10 mt-auto text-center">
-            <p class="opacity-30 text-[9px] uppercase font-black tracking-widest italic">© 2026 VibePhones RD</p>
-        </footer>
-    </div>
-
-    <div id="modal-admin" class="modal-box">
-        <div class="bg-white w-full max-w-[360px] rounded-[2.5rem] p-8 shadow-2xl border-4 border-black max-h-[85vh] overflow-y-auto">
-            <h2 class="font-black uppercase text-center mb-6 text-xl italic">Administración</h2>
-            
-            <div class="space-y-4 mb-6">
-                <input type="text" id="adm-n" placeholder="Nombre (Cualquier equipo)" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none">
-                <input type="number" id="adm-p" placeholder="Precio RD$" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none">
-                <input type="text" id="adm-d" placeholder="Detalles (RAM, Marca, etc.)" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none">
-                <input type="text" id="adm-i" placeholder="URL de la Foto" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold text-sm outline-none">
-                <button id="btn-save" class="w-full bg-black text-white p-5 rounded-2xl font-black uppercase text-xs">Publicar Stock</button>
-            </div>
-
-            <div id="admin-gestion-lista" class="border-t pt-4 space-y-2">
-                <p class="text-[10px] font-black text-slate-400 uppercase">Eliminar Stock Actual:</p>
-            </div>
-            
-            <button onclick="cerrarModales()" class="w-full text-slate-400 font-bold text-[10px] uppercase mt-6">Cerrar</button>
-        </div>
-    </div>
-
-    <div id="modal-pedido" class="modal-box">
-        <div class="bg-white w-full max-w-[350px] rounded-[2.5rem] p-8 shadow-2xl">
-            <h3 class="text-center font-black uppercase text-xs mb-6 text-slate-400 tracking-widest">Recibo de Pedido</h3>
-            <div class="space-y-4">
-                <input type="text" id="f-nombre" placeholder="Tu Nombre Completo" class="w-full p-4 bg-slate-100 rounded-2xl font-bold text-sm outline-none">
-                <div class="bg-slate-900 text-white p-6 rounded-[2rem] text-center shadow-lg">
-                    <p id="p-equipo" class="text-[9px] uppercase opacity-50 font-black mb-1"></p>
-                    <p id="p-total" class="text-3xl font-black text-blue-400"></p>
-                </div>
-                <button onclick="enviarPedido()" class="w-full bg-blue-600 text-white p-5 rounded-2xl font-black text-xs uppercase">Confirmar por WhatsApp</button>
-                <button onclick="cerrarModales()" class="w-full text-slate-400 font-bold text-[10px] uppercase mt-4 block text-center">Cancelar</button>
+            <div class="flex gap-6 md:gap-10 text-[10px] md:text-xs font-black uppercase tracking-widest text-gray-400">
+                <button onclick="setTab('phones')" class="hover:text-blue-600 transition">Smartphones</button>
+                <button onclick="setTab('accs')" class="hover:text-blue-600 transition">Accesorios</button>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <header class="max-w-[1400px] mx-auto px-8 py-16 md:py-24 text-center">
+        <h2 class="text-5xl md:text-8xl font-black tracking-tighter mb-8 italic bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">VibePhone RD.</h2>
+        <p class="text-lg md:text-xl text-gray-500 font-medium max-w-2xl mx-auto mb-10">Más que una tienda, somos tu aliado tecnológico en Santo Domingo.</p>
+    </header>
 
-        // FIREBASE (Pon tus credenciales)
-        const firebaseConfig = { /* CONFIGURACIÓN AQUÍ */ };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // CONTADOR DE 5 CLICS
-        let clics = 0;
-        window.contarClics = () => {
-            clics++;
-            if (clics === 5) {
-                const pass = prompt("CONTRASEÑA:");
-                if (pass === "Avd101294") {
-                    document.getElementById('modal-admin').style.display = 'flex';
-                }
-                clics = 0;
-            }
-            setTimeout(() => clics = 0, 3000);
-        };
-
-        // CARGAR DATA Y GESTIÓN
-        onSnapshot(query(collection(db, "productos"), orderBy("creado", "desc")), (snap) => {
-            const list = document.getElementById('lista-productos');
-            const admList = document.getElementById('admin-gestion-lista');
-            list.innerHTML = "";
-            admList.innerHTML = '<p class="text-[10px] font-black text-slate-400 uppercase">Eliminar Stock Actual:</p>';
-
-            snap.forEach(docSnap => {
-                const p = docSnap.data();
-                const id = docSnap.id;
-
-                list.innerHTML += `
-                <div class="product-card">
-                    <div class="img-container"><img src="${p.img}" class="product-img"></div>
-                    <div class="p-3 border-t text-center flex-grow flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-[10px] font-black uppercase text-slate-800 line-clamp-1">${p.nombre}</h3>
-                            <p class="text-[8px] font-bold text-slate-400 italic">${p.detalles || ''}</p>
+    <section class="max-w-[1200px] mx-auto px-8 mb-24">
+        <div class="bg-gray-50 rounded-[50px] p-12 md:p-20 border border-gray-100 shadow-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-blue-600 font-black uppercase tracking-widest text-sm italic">Tu satisfacción es nuestra meta</span>
+                    <h3 class="text-4xl md:text-5xl font-extrabold mt-4 mb-6 tracking-tight">Comprometidos con la excelencia en RD.</h3>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                        En <strong>VibePhone RD</strong>, nos enorgullecemos de ofrecer equipos auténticos con un trato 100% personalizado. Garantizamos tecnología de alta gama al mejor precio del mercado dominicano.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <div class="flex items-center gap-3 bg-blue-600 px-6 py-4 rounded-2xl text-white shadow-xl">
+                            <i class="fas fa-hand-holding-dollar text-xl"></i>
+                            <div>
+                                <p class="text-[10px] font-bold uppercase opacity-80 leading-none">Sistema Especial</p>
+                                <p class="text-sm font-black uppercase tracking-tighter">Apartar con 70% / Entrega con 30%</p>
+                            </div>
                         </div>
-                        <p class="text-blue-600 font-black text-sm my-3">RD$ ${p.precio.toLocaleString()}</p>
-                        <button onclick="abrirRecibo('${p.nombre}', ${p.precio})" class="w-full bg-black text-white py-2 rounded-xl text-[9px] font-black uppercase">Comprar</button>
                     </div>
-                </div>`;
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 text-center shadow-sm">
+                        <i class="fas fa-shield-alt text-3xl mb-4 text-blue-600"></i>
+                        <h4 class="font-black text-xs uppercase">100% Seguro</h4>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 text-center shadow-sm">
+                        <i class="fas fa-star text-3xl mb-4 text-yellow-500"></i>
+                        <h4 class="font-black text-xs uppercase">Calidad TOP</h4>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 text-center shadow-sm">
+                        <i class="fas fa-handshake text-3xl mb-4 text-purple-600"></i>
+                        <h4 class="font-black text-xs uppercase">Garantía Real</h4>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl border border-gray-100 text-center shadow-sm">
+                        <i class="fas fa-map-marker-alt text-3xl mb-4 text-red-500"></i>
+                        <h4 class="font-black text-xs uppercase">Santo Domingo</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                admList.innerHTML += `
-                <div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border">
-                    <span class="text-[9px] font-black uppercase truncate w-2/3">${p.nombre}</span>
-                    <button onclick="borrarProducto('${id}')" class="text-red-500 font-black text-[9px]">BORRAR</button>
-                </div>`;
+    <main id="store-grid" class="product-grid"></main>
+
+    <div id="buy-modal" class="modal-blur">
+        <div class="modal-box">
+            <div class="flex justify-between items-start mb-8">
+                <div>
+                    <h2 class="text-3xl font-black">Tu Recibo Digital</h2>
+                    <p class="text-gray-400 text-sm font-bold uppercase tracking-widest mt-1">VibePhone RD</p>
+                </div>
+                <div class="bg-blue-50 text-blue-600 p-4 rounded-2xl font-black text-xs border border-blue-100" id="receipt-id"></div>
+            </div>
+            <div id="prod-summary" class="bg-gray-50 rounded-[30px] p-6 mb-8 flex items-center gap-6 border border-gray-100"></div>
+            <form onsubmit="sendOrder(event)" class="space-y-4">
+                <input type="text" id="c-name" placeholder="Nombre y Apellido" required class="w-full p-5 bg-gray-50 rounded-2xl outline-none focus:ring-2 ring-blue-500 font-bold">
+                <input type="text" id="c-address" placeholder="Dirección en Santo Domingo" required class="w-full p-5 bg-gray-50 rounded-2xl outline-none focus:ring-2 ring-blue-500 font-bold">
+                <div class="bg-gradient-to-br from-blue-600 to-purple-600 p-8 rounded-[35px] text-white my-8 shadow-2xl">
+                    <p class="text-blue-200 text-xs font-bold uppercase tracking-widest mb-2">Precio Total</p>
+                    <div class="text-4xl font-black" id="price-total">RD$ 0</div>
+                    <div class="mt-4 pt-4 border-t border-white/10 flex justify-between text-[10px] font-bold opacity-60 uppercase">
+                        <span>Lugar: Santo Domingo, RD</span>
+                        <span id="live-time"></span>
+                    </div>
+                </div>
+                <button type="submit" class="w-full py-6 bg-black text-white rounded-[25px] font-black text-lg shadow-xl uppercase tracking-widest">Confirmar por WhatsApp</button>
+                <button type="button" onclick="closeM()" class="w-full py-2 text-gray-400 font-bold text-xs uppercase mt-2">Volver a la tienda</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal-blur">
+        <div class="modal-box !max-w-4xl">
+            <h2 class="text-3xl font-black mb-8 text-blue-600 italic">Administración VibePhone</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-8 rounded-[35px] mb-8 border border-gray-200">
+                <input type="text" id="in-name" placeholder="Modelo del Equipo" class="p-5 rounded-2xl outline-none font-bold">
+                <input type="number" id="in-price" placeholder="Precio RD$" class="p-5 rounded-2xl outline-none font-bold">
+                <input type="text" id="in-url" placeholder="URL Foto" class="p-5 rounded-2xl outline-none">
+                <select id="in-cat" class="p-5 rounded-2xl font-bold"><option value="phones">CELULARES</option><option value="accs">ACCESORIOS</option></select>
+                <textarea id="in-desc" placeholder="Detalles técnicos..." class="p-5 rounded-2xl md:col-span-2 min-h-[100px]"></textarea>
+                <button onclick="saveToFirebase()" class="md:col-span-2 py-5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-black uppercase tracking-widest">Publicar Ahora</button>
+            </div>
+            <div id="admin-list" class="space-y-3 max-h-60 overflow-y-auto pr-2"></div>
+            <button onclick="closeM()" class="mt-8 text-gray-400 font-bold text-xs uppercase">Cerrar Panel</button>
+        </div>
+    </div>
+
+    <footer class="bg-white border-t border-gray-100 pt-20 pb-10">
+        <div class="max-w-[1400px] mx-auto px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-white font-black">V</div>
+                        <h3 class="text-xl font-black tracking-tighter">VibePhone RD</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm font-medium leading-relaxed">La tienda de tecnología más confiable de Santo Domingo. Calidad premium garantizada.</p>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs uppercase tracking-[0.2em] mb-6 text-gray-900">Navegación</h4>
+                    <ul class="space-y-4 text-sm font-bold text-gray-500">
+                        <li><button onclick="setTab('phones')" class="hover:text-blue-600">Smartphones</button></li>
+                        <li><button onclick="setTab('accs')" class="hover:text-blue-600">Accesorios</button></li>
+                        <li><a href="https://wa.me/8098182320" class="hover:text-blue-600">Soporte Técnico</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs uppercase tracking-[0.2em] mb-6 text-gray-900">Contacto</h4>
+                    <ul class="space-y-4 text-sm font-bold text-gray-500">
+                        <li class="flex items-center gap-3"><i class="fas fa-phone text-blue-600"></i> +1 (809) 818-2320</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-map-marker-alt text-blue-600"></i> Santo Domingo, RD</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-black text-xs uppercase tracking-[0.2em] mb-6 text-gray-900">Siguenos</h4>
+                    <div class="flex gap-4">
+                        <a href="https://www.instagram.com/vibephone_rd" target="_blank" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:bg-gradient-to-tr hover:from-purple-500 hover:to-pink-500 hover:text-white transition-all shadow-sm"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/8098182320" target="_blank" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:bg-green-500 hover:text-white transition-all shadow-sm"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-xl text-gray-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-50 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[11px] font-black text-gray-300 uppercase tracking-widest">
+                <p>© 2026 VibePhone RD. Calidad Premium en Santo Domingo.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyByV8-3X8kR_TlxV7-H6m5jW7L-p_z1r4",
+          authDomain: "phonestorerd.firebaseapp.com",
+          projectId: "phonestorerd",
+          storageBucket: "phonestorerd.appspot.com",
+          messagingSenderId: "360706963034",
+          appId: "1:360706963034:web:49d1102e8ca73d55918a63"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let currentTab = 'phones', currentProd = null, count = 0;
+
+        document.getElementById('logo-trigger').onclick = () => {
+            count++; if(count === 5) { if(prompt("CLAVE ADMIN:") === "Avd121094") { document.getElementById('admin-modal').style.display='flex'; loadAdminItems(); } count = 0; }
+        };
+
+        async function saveToFirebase() {
+            const n = document.getElementById('in-name').value;
+            const p = document.getElementById('in-price').value;
+            if(!n || !p) return alert("Faltan datos");
+            await db.collection("productos").add({ n, p, d: document.getElementById('in-desc').value, url: document.getElementById('in-url').value, cat: document.getElementById('in-cat').value, fecha: Date.now() });
+            location.reload();
+        }
+
+        async function loadAdminItems() {
+            const list = document.getElementById('admin-list');
+            const qs = await db.collection("productos").get();
+            list.innerHTML = "";
+            qs.forEach(doc => {
+                list.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl border border-gray-100 font-bold text-xs"><span>${doc.data().n}</span><button onclick="deleteItem('${doc.id}')" class="text-red-500 bg-red-50 px-3 py-1 rounded-lg">Eliminar</button></div>`;
             });
-        });
+        }
 
-        // FUNCIONES DE ACCIÓN
-        document.getElementById('btn-save').onclick = async () => {
-            const n = document.getElementById('adm-n').value, p = parseFloat(document.getElementById('adm-p').value), d = document.getElementById('adm-d').value, i = document.getElementById('adm-i').value;
-            if (n && p && i) {
-                await addDoc(collection(db, "productos"), { nombre: n, precio: p, detalles: d, img: i, creado: serverTimestamp() });
-                alert("Publicado ✅");
-                cerrarModales();
-            }
-        };
+        async function deleteItem(id) { if(confirm("¿Eliminar?")) { await db.collection("productos").doc(id).delete(); loadAdminItems(); } }
 
-        window.borrarProducto = async (id) => { if (confirm("¿Borrar?")) await deleteDoc(doc(db, "productos", id)); };
+        async function renderStore() {
+            const grid = document.getElementById('store-grid');
+            grid.innerHTML = '<div class="col-span-full py-20 text-center text-blue-600 font-black animate-pulse uppercase">Actualizando Stock...</div>';
+            try {
+                const qs = await db.collection("productos").where("cat", "==", currentTab).get();
+                grid.innerHTML = "";
+                if(qs.empty) { grid.innerHTML = `<div class="col-span-full text-center py-40 font-black text-gray-300 uppercase italic text-2xl">Próximamente más equipos</div>`; return; }
+                qs.forEach(doc => {
+                    const item = doc.data();
+                    grid.innerHTML += `<div class="vibe-card"><img src="${item.url}" onerror="this.src='https://via.placeholder.com/600x600?text=VibePhone'"><div class="px-10 pb-4"><h3 class="text-2xl font-black tracking-tight mb-2 italic">${item.n}</h3><p class="text-gray-400 text-xs font-medium mb-6 uppercase tracking-widest">${item.d}</p><p class="text-3xl font-black mb-8">RD$ ${Number(item.p).toLocaleString()}</p></div><button onclick="openForm('${item.n}', '${item.p}', '${item.url}')" class="btn-buy">Adquirir Equipo</button></div>`;
+                });
+            } catch (e) { grid.innerHTML = '<p class="col-span-full text-center text-red-500">Error.</p>'; }
+        }
 
-        window.abrirRecibo = (n, p) => {
-            document.getElementById('p-equipo').innerText = n;
-            document.getElementById('p-total').innerText = "RD$ " + p.toLocaleString();
-            document.getElementById('modal-pedido').style.display = 'flex';
-        };
+        function openForm(n, p, img) {
+            currentProd = { n, p };
+            const now = new Date();
+            document.getElementById('receipt-id').innerText = "VP-" + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('live-time').innerText = now.toLocaleDateString() + " | " + now.toLocaleTimeString();
+            document.getElementById('prod-summary').innerHTML = `<img src="${img}" class="w-20 h-20 object-contain"><div><p class="font-black text-lg uppercase">${n}</p><p class="text-blue-600 font-black">RD$ ${Number(p).toLocaleString()}</p></div>`;
+            document.getElementById('price-total').innerText = "RD$ " + Number(p).toLocaleString();
+            document.getElementById('buy-modal').style.display = 'flex';
+        }
 
-        window.enviarPedido = () => {
-            const nom = document.getElementById('f-nombre').value, equ = document.getElementById('p-equipo').innerText, pre = document.getElementById('p-total').innerText;
-            if (!nom) return alert("Escribe tu nombre");
-            const msj = `📦 *ORDEN:* ${equ}%0A👤 *Cliente:* ${nom}%0A💰 *Total:* ${pre}%0A%0A_VibePhones RD_`;
-            window.open(`https://wa.me/18098182320?text=${msj}`);
-        };
+        function sendOrder(e) {
+            e.preventDefault();
+            const msg = `🧾 *ORDEN VIBEPHONE RD*%0A━━━━━━━━━━━━━━━━━━━━%0A🆔 *No:* ${document.getElementById('receipt-id').innerText}%0A📱 *Equipo:* ${currentProd.n}%0A💰 *Total:* RD$ ${Number(currentProd.p).toLocaleString()}%0A👤 *Cliente:* ${document.getElementById('c-name').value}%0A📍 *Dirección:* ${document.getElementById('c-address').value}`;
+            window.location.href = `https://wa.me/8098182320?text=${msg}`;
+        }
 
-        window.cerrarModales = () => {
-            document.querySelectorAll('.modal-box').forEach(m => m.style.display = 'none');
-        };
+        function setTab(t) { currentTab = t; renderStore(); }
+        function closeM() { document.querySelectorAll('.modal-blur').forEach(m => m.style.display='none'); }
+        renderStore();
     </script>
 </body>
 </html>
